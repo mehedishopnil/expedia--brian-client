@@ -44,7 +44,7 @@ const CarouselCard = () => {
       {/* Left Arrow Button */}
       <button
         onClick={handlePrev}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 sm:hidden"
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#fddb32] p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 sm:hidden"
       >
         <FaArrowCircleLeft className="text-gray-700 text-2xl" />
       </button>
@@ -72,11 +72,11 @@ const CarouselCard = () => {
                 </div>
 
                 {/* Right Section */}
-                <div className="w-1/2">
+                <div className="w-1/2 ">
                   <img
                     src={card.image}
                     alt={card.header}
-                    className="w-full h-32 object-cover"
+                    className="w-full h-32  object-cover"
                   />
                 </div>
               </div>
@@ -88,7 +88,7 @@ const CarouselCard = () => {
       {/* Right Arrow Button */}
       <button
         onClick={handleNext}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 sm:hidden"
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#fddb32] p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 sm:hidden"
       >
         <FaArrowCircleRight className="text-gray-700 text-2xl" />
       </button>
