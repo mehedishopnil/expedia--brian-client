@@ -6,12 +6,12 @@ const SignIn = () => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       {/* Title */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">
+      <h1 className="text-xl font-bold text-gray-800 mb-2">
         Sign in or create an account
       </h1>
 
       {/* Description */}
-      <p className="text-gray-600 mb-6">
+      <p className="text-sm text-gray-600 mb-6">
         Unlock a world of rewards with one account across Expedia, Hotels.com, and Vrbo.
       </p>
 
