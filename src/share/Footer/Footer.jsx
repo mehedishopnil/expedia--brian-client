@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
-import expediaGroup from "../../assets/images/expediaGroup.svg";
+import TravelLeisureLogo from "../../assets/images/Travel+Leisure-logo.png";
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         {/* Expedia Group Logo */}
         <div className="flex  mb-4">
-          <img src={expediaGroup} alt="Expedia Group" className="w-40 h-auto" />
+          <img src={TravelLeisureLogo} alt="Expedia Group" className="w-40 h-auto" />
         </div>
 
         {/* Footer Content */}

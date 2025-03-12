@@ -101,7 +101,7 @@ const Home = () => {
  
       <div className="relative relate border rounded">
       <img  src={KeyImg} alt="" className="absolute w-32 left-36 top-40 z-50"/>
-        <img src={bannerImg2} alt="" />
+        <img src={bannerImg2} alt="" className="rounded-t"/>
         
 
         <div className="p-3 pt-10 space-y-2 bg-[#f1f7ff]">

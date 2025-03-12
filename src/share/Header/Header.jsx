@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdDownload } from "react-icons/io";
 import { FaBed, FaPlane, FaCar, FaGift, FaUmbrellaBeach, FaShip, FaUserCircle } from "react-icons/fa";
-import logo from "../../../public/Expedia_Logo.png";
+import logo from "../../assets/images/Travel+Leisure-logo.png";
 import ToggleMenu from "../../components/ToggleMenu/ToggleMenu";
 
 const Header = () => {
