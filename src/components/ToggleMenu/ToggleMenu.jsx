@@ -3,6 +3,7 @@ import { FaSearch, FaQuestionCircle } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { BsFlag } from "react-icons/bs";
 import { MdOutlineTravelExplore } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const ToggleMenu = () => {
   return (
@@ -14,9 +15,11 @@ const ToggleMenu = () => {
       </h3>
 
       {/* Sign In Button */}
+      <Link to="/signin">
       <button className="w-full bg-blue-600 text-white font-medium text-[14px] py-1 rounded-full hover:bg-blue-700 transition-all duration-200">
         Sign in
       </button>
+      </Link>
 
       {/* Learn More */}
       <p className="text-gray-600 text-[12px] text-center mt-1 cursor-pointer hover:text-blue-600">

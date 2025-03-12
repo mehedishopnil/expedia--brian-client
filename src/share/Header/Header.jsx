@@ -78,7 +78,7 @@ const Header = () => {
 
       {/* User Menu - Popup from Right (Not Fixed) */}
       {isUserMenuOpen && (
-        <div className="absolute top-16 right-0 w-[350px] bg-white shadow-lg rounded-md transition-transform duration-300 ease-in-out transform translate-x-0">
+        <div className="absolute top-16 right-0 w-[350px] bg-white shadow-lg rounded-md transition-transform duration-300 z-50 ease-in-out transform translate-x-0">
           <ToggleMenu closeMenu={toggleUserMenu} />
         </div>
       )}

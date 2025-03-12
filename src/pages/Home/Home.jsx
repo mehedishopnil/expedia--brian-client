@@ -5,6 +5,9 @@ import Cars from "../../components/SearchFilter/Cars";
 import Packages from "../../components/SearchFilter/Packages";
 import ThingsToDo from "../../components/SearchFilter/ThingsToDo";
 import Cruises from "../../components/SearchFilter/Cruises";
+import icon1 from "../../assets/images/onekey__standard__always_light.svg";
+import { Link } from "react-router-dom";
+import bannerImg1 from "../../assets/images/banner-img-1.avif";
 
 const Home = () => {
   const [activeFilter, setActiveFilter] = useState("Stays");
@@ -58,6 +61,35 @@ const Home = () => {
 
       {/* Filter Content */}
       <div>{renderFilterContent()}</div>
+
+      <div className="py-5 px-2 rounded bg-[#031a3b]">
+        <div className="flex items-center justify-center gap-4">
+          <img src={icon1} className="w-12" alt="" />
+          <h1 className="text-[#ddecfd]">One Key members always get our best prices</h1>
+        </div>
+
+        <Link to="/signin">
+        <button type="button" className="w-full rounded-full btn mt-4 py-1 text-white bg-blue-500">Sign in</button>
+        </Link>
+      </div>
+
+
+      {/* The Annual Vacations Sale */}
+      <div className="border my-10 rounded">
+        <div className="p-3">
+          <h1 className="text-3xl  font-[times-new-roman]">The Annual Vacation Sale: Save 25%+</h1>
+          <p className="text-sm">Members save 25% or more on select hotels until Mar 31. And now more choices to get there with Southwest Airlines on Expedia.</p>
+          <Link to="/">
+            <button type="button" className="w-1/2 rounded-full btn mt-4 py-1 text-white bg-blue-500">Unlock vacation deals </button>
+          </Link>
+        </div>
+
+          <img src={bannerImg1} alt="" className="h-full w-full covered rounded-b"/>
+
+      </div>
+
+
+
     </div>
   );
 };
