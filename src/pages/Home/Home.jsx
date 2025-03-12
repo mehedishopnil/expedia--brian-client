@@ -8,6 +8,9 @@ import Cruises from "../../components/SearchFilter/Cruises";
 import icon1 from "../../assets/images/onekey__standard__always_light.svg";
 import { Link } from "react-router-dom";
 import bannerImg1 from "../../assets/images/banner-img-1.avif";
+import bannerImg2 from "../../assets/images/banner-img-2.avif";
+import KeyImg from "../../assets/images/Key.avif";
+import CarouselCard from "./HomeContent/CarouselCard";
 
 const Home = () => {
   const [activeFilter, setActiveFilter] = useState("Stays");
@@ -84,9 +87,33 @@ const Home = () => {
           </Link>
         </div>
 
-          <img src={bannerImg1} alt="" className="h-full w-full covered rounded-b"/>
+        <img src={bannerImg1} alt="" className="h-full w-full covered rounded-b"/>
 
       </div>
+
+      {/* Carousel Card */}
+      <div className="my-10">
+      <CarouselCard />
+      </div>
+
+
+      {/* OneKeyCash */}
+ 
+      <div className="relative relate border rounded">
+      <img  src={KeyImg} alt="" className="absolute w-32 left-36 top-48 z-50"/>
+        <img src={bannerImg2} alt="" />
+        
+
+        <div className="p-3 pt-10 space-y-2 bg-[#f1f7ff]">
+          <h1 className=""><span className="text-sm bg-black text-white px-2 py-1 rounded">New</span></h1>
+          <h1 className="font-semibold">Earn up to $600 in OneKeyCash™</h1>
+          <p>after qualifying purchases. Terms apply.</p>
+          <p>OneKeyCash is not redeemable for cash.</p>
+          <button className="btn  border px-2 py-1 border-gray-400 bg-white  rounded-full text-blue-600 hover:bg-slate-100">Learn more</button>
+        </div>
+      </div>
+
+
 
 
 
