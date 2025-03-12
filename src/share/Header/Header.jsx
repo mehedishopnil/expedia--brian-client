@@ -24,7 +24,7 @@ const Header = () => {
         {/* Logo and Shop Travel Toggle */}
         <div className="flex items-center gap-8">
           <Link to="/">
-            <img src={logo} className="w-24 md:w-32" alt="Expedia Logo" />
+            <img src={logo} className="w-28 md:w-32" alt="Expedia Logo" />
           </Link>
 
           {/* Shop Travel Toggle (Desktop) */}
