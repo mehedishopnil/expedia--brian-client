@@ -9,19 +9,19 @@ const CarouselCard = () => {
   const cards = [
     {
       id: 1,
-      header: "Explore the Mountains",
+      header: "Cleared for takeoff: Southwest Airlines now on Expedia",
       image: airImg,
       link: "#",
     },
     {
       id: 2,
-      header: "Relax by the Beach",
+      header: "The Annual Vacation Sale has landed",
       image: londonBridgeImg,
       link: "#",
     },
     {
       id: 3,
-      header: "Discover the City",
+      header: "Earn up to $600 in OneKeyCash™. Terms apply",
       image: keyImg,
       link: "#",
     },
@@ -64,9 +64,9 @@ const CarouselCard = () => {
               <div className="flex">
                 {/* Left Section */}
                 <div className="w-1/2 p-4 flex flex-col justify-between">
-                  <h3 className="text-lg font-semibold text-gray-800">{card.header}</h3>
-                  <button className="flex items-center text-blue-600 hover:text-blue-800">
-                    <span className="mr-2">Book Now</span>
+                  <h3 className="text-sm font-semibold text-gray-800">{card.header}</h3>
+                  <button className="flex items-center text-gray-800 hover:text-blue-800">
+                    <span className="text-sm mr-2">Book Now</span>
                     <FaArrowRight />
                   </button>
                 </div>

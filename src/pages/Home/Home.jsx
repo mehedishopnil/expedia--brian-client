@@ -100,7 +100,7 @@ const Home = () => {
       {/* OneKeyCash */}
  
       <div className="relative relate border rounded">
-      <img  src={KeyImg} alt="" className="absolute w-32 left-36 top-48 z-50"/>
+      <img  src={KeyImg} alt="" className="absolute w-32 left-36 top-40 z-50"/>
         <img src={bannerImg2} alt="" />
         
 
