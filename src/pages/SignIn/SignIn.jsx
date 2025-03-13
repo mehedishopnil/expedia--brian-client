@@ -1,8 +1,110 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebook } from "react-icons/fa";
+import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
+  const { login, googleLogin } = useContext(AuthContext); 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/"; // Redirect to the previous page or default to homepage
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Handle Google login
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin(); // Call googleLogin function from context
+      Swal.fire({
+        title: "Successfully Logged In with Google",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `,
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `,
+        },
+      });
+      navigate(from, { replace: true }); // Redirect to the previous page
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error logging in with Google",
+        footer: "Please try again later",
+      });
+    }
+  };
+
+  // Handle manual login
+  const handleManualLogin = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please enter both email and password.",
+      });
+      return;
+    }
+
+    try {
+      await login(email, password); // Call login function from context
+      Swal.fire({
+        title: "Successfully Logged In",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `,
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `,
+        },
+      });
+      navigate(from, { replace: true }); // Redirect to the previous page
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid email or password.",
+        footer: "Please try again.",
+      });
+    }
+  };
+
+  // Handle Continue button click
+  const handleContinue = () => {
+    if (!email) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please enter your email.",
+      });
+      return;
+    }
+    setShowPassword(true); // Show password input field
+  };
+
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       {/* Title */}
@@ -16,7 +118,10 @@ const SignIn = () => {
       </p>
 
       {/* Google Sign-In Button */}
-      <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg p-3 mb-4 hover:bg-gray-50 transition-colors">
+      <button
+        onClick={handleGoogleLogin}
+        className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg p-3 mb-4 hover:bg-gray-50 transition-colors"
+      >
         <FcGoogle className="text-xl" />
         <span className="text-gray-700 font-medium">Sign in with Google</span>
       </button>
@@ -32,12 +137,28 @@ const SignIn = () => {
       <input
         type="email"
         placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      {/* Continue Button */}
-      <button className="w-full bg-blue-600 text-white font-semibold rounded-lg p-3 hover:bg-blue-700 transition-colors">
-        Continue
+      {/* Password Input Field (Conditional) */}
+      {showPassword && (
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      )}
+
+      {/* Continue/Login Button */}
+      <button
+        onClick={showPassword ? handleManualLogin : handleContinue}
+        className="w-full bg-blue-600 text-white font-semibold rounded-lg p-3 hover:bg-blue-700 transition-colors"
+      >
+        {showPassword ? "Login" : "Continue"}
       </button>
 
       {/* Other Ways to Sign In */}
