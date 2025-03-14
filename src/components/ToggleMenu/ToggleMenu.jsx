@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSearch, FaQuestionCircle } from "react-icons/fa";
+import { FaSearch, FaQuestionCircle, FaHotel } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { BsFlag } from "react-icons/bs";
 import { MdOutlineTravelExplore } from "react-icons/md";
@@ -31,6 +31,7 @@ const ToggleMenu = () => {
 
       {/* Menu Items */}
       <div className="space-y-3">
+        <Link to="/hotels"><MenuItem icon={<FaHotel />} text="Hotels" /></Link>
         <MenuItem icon={<IoMdMail />} text="Inbox" />
         <MenuItem icon={<FaSearch />} text="Shop travel" />
         <MenuItem icon={<FaQuestionCircle />} text="Support" />

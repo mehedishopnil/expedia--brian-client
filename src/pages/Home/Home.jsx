@@ -103,7 +103,6 @@ const Home = () => {
       <img  src={KeyImg} alt="" className="absolute w-32 left-36 top-40 z-50"/>
         <img src={bannerImg2} alt="" className="rounded-t"/>
         
-
         <div className="p-3 pt-10 space-y-2 bg-[#f1f7ff]">
           <h1 className=""><span className="text-sm bg-black text-white px-2 py-1 rounded">New</span></h1>
           <h1 className="font-semibold">Earn up to $600 in OneKeyCash™</h1>
@@ -112,9 +111,6 @@ const Home = () => {
           <button className="btn  border px-2 py-1 border-gray-400 bg-white  rounded-full text-blue-600 hover:bg-slate-100">Learn more</button>
         </div>
       </div>
-
-
-
 
 
     </div>

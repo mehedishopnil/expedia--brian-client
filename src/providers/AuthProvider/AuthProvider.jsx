@@ -28,6 +28,7 @@ const AuthProvider = ({ children }) => {
   const [allUsersData, setAllUsersData] = useState([]); 
   const [role, setRole] = useState(null);
 
+
   // Function to create user and send data to backend
   const createUser = async (name, email, password, membership) => {
     setLoading(true);
