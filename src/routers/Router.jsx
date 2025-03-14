@@ -4,6 +4,9 @@ import Home from "../pages/Home/Home";
 import SignIn from "../pages/SignIn/SignIn";
 import Registration from "../pages/Registration/Registration";
 import Hotels from "../pages/Hotels/Hotels";
+import SingleResortPage from "../components/SingleResortPage/SingleResortPage";
+
+
 
 export const router = createBrowserRouter([
      {
@@ -25,6 +28,10 @@ export const router = createBrowserRouter([
                {
                     path: "hotels",
                     element: <Hotels />
+               },
+               {
+                    path: "singleResortPage/:_id",
+                    element: <SingleResortPage />
                }
           ]
      }
