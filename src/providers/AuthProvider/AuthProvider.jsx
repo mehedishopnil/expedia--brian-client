@@ -9,7 +9,8 @@ import {
   getAuth,
   GoogleAuthProvider
 } from "firebase/auth";
-import app from "../../Firebase/firebase.config";
+import app from "../../firebase/firebase.config";
+
 
 // Create AuthContext for global state management
 export const AuthContext = createContext();
