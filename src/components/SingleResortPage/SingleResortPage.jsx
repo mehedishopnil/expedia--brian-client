@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
 import Loading from "../Loading";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Overview from "./TabContent/Overview";
+import About from "./TabContent/About";
+import Rooms from "./TabContent/Rooms";
+import Accessibility from "./TabContent/Accessibility";
+import Policies from "./TabContent/Policies";
 
 const SingleResortPage = () => {
   const { _id } = useParams();
@@ -35,8 +40,9 @@ const SingleResortPage = () => {
 
   if (!resort) return <Loading />;
 
-  const { img, img2, img3, place_name, location, rating, reviews_amount } = resort;
+  const { img, img2, img3, place_name } = resort;
   const images = [img, img2, img3];
+  console.log(resort)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -45,7 +51,7 @@ const SingleResortPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="relative mb-8 h-60 overflow-hidden rounded-lg">
+      <div className="relative mb-8 h-48 overflow-hidden rounded-sm">
         {images.map((image, index) => (
           <img
             key={index}
@@ -58,7 +64,7 @@ const SingleResortPage = () => {
         ))}
         <button
           onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? 2 : prev - 1))}
-          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent  border-white p-2 hover:bg-white"
+          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-2 hover:bg-white"
         >
           <FiChevronLeft className="h-6 w-6" />
         </button>
@@ -71,12 +77,12 @@ const SingleResortPage = () => {
       </div>
 
       {/* Sticky Tab Menu */}
-      <div className="sticky top-0 z-10 flex w-full overflow-x-auto whitespace-nowrap bg-white border-b border-gray-200  ">
+      <div className=" sticky top-0 z-10 flex justify-center w-full overflow-x-auto whitespace-nowrap bg-white  border-b-2 border-gray-200 ">
         {Object.keys(sectionRefs).map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`mx-2 flex-shrink-0  py-2 text-sm font-semibold capitalize  sm:text-base md:text-lg lg:px-6 lg:py-3 ${
+            className={`mx-2 flex-shrink-0 py-2 text-sm font-semibold capitalize sm:text-base md:text-lg lg:px-6 lg:py-3 ${
               activeTab === tab
                 ? "border-b-2 border-blue-600 text-blue-600"
                 : "text-gray-500 hover:text-gray-700"
@@ -89,12 +95,21 @@ const SingleResortPage = () => {
 
       {/* Tab Content Sections */}
       <div className="space-y-12">
-        {Object.entries(sectionRefs).map(([tab, ref]) => (
-          <section key={tab} ref={ref} className="scroll-mt-20 p-4">
-            <h2 className="mb-4 text-3xl font-bold capitalize">{tab}</h2>
-            <p className="text-gray-600">Content for {tab}...</p>
-          </section>
-        ))}
+        <section ref={sectionRefs.overview} className="scroll-mt-20 p-4">
+          <Overview resort={resort} />
+        </section>
+        <section ref={sectionRefs.about} className="scroll-mt-20 p-4">
+          <About resort={resort} />
+        </section>
+        <section ref={sectionRefs.rooms} className="scroll-mt-20 p-4">
+          <Rooms resort={resort} />
+        </section>
+        <section ref={sectionRefs.accessibility} className="scroll-mt-20 p-4">
+          <Accessibility resort={resort} />
+        </section>
+        <section ref={sectionRefs.policies} className="scroll-mt-20 p-4">
+          <Policies resort={resort} />
+        </section>
       </div>
     </div>
   );
