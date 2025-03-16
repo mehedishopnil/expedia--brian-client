@@ -5,6 +5,7 @@ import SignIn from "../pages/SignIn/SignIn";
 import Registration from "../pages/Registration/Registration";
 import Hotels from "../pages/Hotels/Hotels";
 import SingleResortPage from "../components/SingleResortPage/SingleResortPage";
+import HotelSearch from "../components/HotelSearch/HotelSearch";
 
 
 
@@ -32,6 +33,11 @@ export const router = createBrowserRouter([
                {
                     path: "singleResortPage/:_id",
                     element: <SingleResortPage />
+               },
+               {
+                    path: "hotel-search",
+                    element: <HotelSearch/>
+
                }
           ]
      }

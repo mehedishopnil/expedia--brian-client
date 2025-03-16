@@ -72,7 +72,7 @@ const About = ({ resort }) => {
           <img src={onekeyIcon} alt="" className="w-20" />
           <div className="flex flex-col gap-2">
                <h1 className="text-white text-sm">Earn OneKeyCash on this stay when you sign in and book. More rewards for more adventures!</h1>
-               <Link to="/login">
+               <Link to="/signin">
                <button className="bg-[#1c4ff7] text-white px-4 py-2 rounded-full">Sign in</button>
                </Link>
           </div>

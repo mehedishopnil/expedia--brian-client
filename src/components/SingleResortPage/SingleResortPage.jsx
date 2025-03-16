@@ -38,11 +38,32 @@ const SingleResortPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Scroll event listener to update active tab
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100; // Adjust for sticky header
+
+      Object.entries(sectionRefs).forEach(([tab, ref]) => {
+        const sectionTop = ref.current.offsetTop;
+        const sectionHeight = ref.current.offsetHeight;
+
+        if (
+          scrollPosition >= sectionTop &&
+          scrollPosition < sectionTop + sectionHeight
+        ) {
+          setActiveTab(tab);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [sectionRefs]);
+
   if (!resort) return <Loading />;
 
   const { img, img2, img3, place_name } = resort;
   const images = [img, img2, img3];
-  console.log(resort)
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -51,6 +72,7 @@ const SingleResortPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Image Slider */}
       <div className="relative mb-8 h-48 overflow-hidden rounded-sm">
         {images.map((image, index) => (
           <img
@@ -77,7 +99,7 @@ const SingleResortPage = () => {
       </div>
 
       {/* Sticky Tab Menu */}
-      <div className=" sticky top-0 z-10 flex justify-center w-full overflow-x-auto whitespace-nowrap bg-white  border-b-2 border-gray-200 ">
+      <div className="sticky top-0 z-10 flex justify-center w-full overflow-x-auto whitespace-nowrap bg-white border-b-2 border-gray-200">
         {Object.keys(sectionRefs).map((tab) => (
           <button
             key={tab}

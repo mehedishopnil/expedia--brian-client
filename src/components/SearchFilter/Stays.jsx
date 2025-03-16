@@ -2,24 +2,32 @@ import React, { useState } from "react";
 import { FaMapMarkerAlt, FaUser, FaCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 const Stays = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupType, setPopupType] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const randomLocation = "New York, USA";
-  const randomTravelers = `${Math.floor(Math.random() * 5) + 1} travelers`;
-  const randomRooms = `${Math.floor(Math.random() * 2) + 1} room`;
+  const [location, setLocation] = useState("");
+  const [travelers, setTravelers] = useState("1 traveler");
+  const [rooms, setRooms] = useState("1 room");
+  const navigate = useNavigate();
 
   const handleButtonClick = (type) => {
     setPopupType(type);
     setShowPopup(true);
   };
 
+  const handleSearch = () => {
+    // Navigate to HotelSearch with the location as a query parameter
+    if (location.trim()) {
+      navigate(`/hotel-search?q=${encodeURIComponent(location.trim())}`);
+    }
+  };
+
   return (
     <div className="bg-white p-4 md:p-6 max-w-5xl mx-auto">
-      <div className="flex flex-col md:flex-row  gap-3">
+      <div className="flex flex-col md:flex-row gap-3">
         {/* Where to Button */}
         <button
           onClick={() => handleButtonClick("location")}
@@ -30,7 +38,9 @@ const Stays = () => {
             <span className="text-sm md:text-base text-gray-700 font-medium">
               Where to
             </span>
-            <span className="text-xs text-gray-500">{randomLocation}</span>
+            <span className="text-xs text-gray-500">
+              {location || "Enter location"}
+            </span>
           </div>
         </button>
 
@@ -65,36 +75,37 @@ const Stays = () => {
               Travelers
             </span>
             <span className="text-xs text-gray-500">
-              {randomTravelers}, {randomRooms}
+              {travelers}, {rooms}
             </span>
           </div>
         </button>
 
         {/* Check Options */}
-      <div className="flex gap-4 mt-4">
-        <label className="flex items-center gap-2 text-sm md:text-base text-gray-700">
-          <input
-            type="checkbox"
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          Add a flight
-        </label>
-        <label className="flex items-center gap-2 text-sm md:text-base text-gray-700">
-          <input
-            type="checkbox"
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          Add a car
-        </label>
-      </div>
+        <div className="flex gap-4 mt-4">
+          <label className="flex items-center gap-2 text-sm md:text-base text-gray-700">
+            <input
+              type="checkbox"
+              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            Add a flight
+          </label>
+          <label className="flex items-center gap-2 text-sm md:text-base text-gray-700">
+            <input
+              type="checkbox"
+              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            Add a car
+          </label>
+        </div>
 
         {/* Search Button */}
-        <button className="w-full md:w-auto bg-[#1668e3] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base">
+        <button
+          onClick={handleSearch}
+          className="w-full md:w-auto bg-[#1668e3] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base"
+        >
           Search
         </button>
       </div>
-
-      
 
       {/* Popup */}
       {showPopup && (
@@ -117,12 +128,41 @@ const Stays = () => {
                   inline
                 />
               </div>
-            ) : (
+            ) : popupType === "location" ? (
               <input
                 type="text"
-                placeholder={`Enter ${popupType}`}
+                placeholder="Enter location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-2 mb-4"
               />
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Travelers
+                  </label>
+                  <input
+                    type="number"
+                    value={travelers.replace(/\D/g, "")}
+                    onChange={(e) =>
+                      setTravelers(`${e.target.value} travelers`)
+                    }
+                    className="w-full border border-gray-300 rounded-lg p-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Rooms
+                  </label>
+                  <input
+                    type="number"
+                    value={rooms.replace(/\D/g, "")}
+                    onChange={(e) => setRooms(`${e.target.value} room`)}
+                    className="w-full border border-gray-300 rounded-lg p-2"
+                  />
+                </div>
+              </div>
             )}
 
             <div className="flex justify-end gap-4">
