@@ -1,50 +1,101 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
 import Loading from "../Loading";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const SingleResortPage = () => {
-  const { _id } = useParams(); // Get the _id from the URL parameters
-  const { allResortData } = useContext(AuthContext); // Access allResortData from AuthContext
-  const [resort, setResort] = useState(null); // State to store the matching resort
+  const { _id } = useParams();
+  const { allResortData } = useContext(AuthContext);
+  const [resort, setResort] = useState(null);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const sectionRefs = {
+    overview: useRef(null),
+    about: useRef(null),
+    rooms: useRef(null),
+    accessibility: useRef(null),
+    policies: useRef(null),
+  };
 
   useEffect(() => {
     if (allResortData && _id) {
-      // Find the resort with the matching _id
       const foundResort = allResortData.find((resort) => resort._id === _id);
-      if (foundResort) {
-        setResort(foundResort); // Set the matching resort in the state
-      } else {
-        console.error("Resort not found");
-      }
+      if (foundResort) setResort(foundResort);
     }
-  }, [_id, allResortData]); // Re-run effect if _id or allResortData changes
+  }, [_id, allResortData]);
 
-  if (!resort) {
-    return <Loading />; // Show loading component if resort is not found
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!resort) return <Loading />;
+
+  const { img, img2, img3, place_name, location, rating, reviews_amount } = resort;
+  const images = [img, img2, img3];
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    sectionRefs[tab].current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">
-        {resort.place_name}
-      </h1>
-      <img
-        src={resort.img}
-        alt={resort.place_name}
-        className="w-full h-64 object-cover rounded-lg mb-4"
-      />
-      <p className="text-gray-600 mb-2">
-        <span className="font-semibold">Location:</span> {resort.location}
-      </p>
-      <p className="text-gray-600 mb-2">
-        <span className="font-semibold">Rating:</span> {resort.rating}/10
-      </p>
-      <p className="text-gray-600 mb-4">
-        <span className="font-semibold">Reviews:</span> {resort.reviews_amount}{" "}
-        reviews
-      </p>
-      {/* Add more details as needed */}
+    <div className="container mx-auto px-4 py-8">
+      <div className="relative mb-8 h-60 overflow-hidden rounded-lg">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            alt={place_name}
+            className={`absolute h-full w-full object-cover transition-opacity duration-500 ${
+              index === currentImageIndex ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+        <button
+          onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? 2 : prev - 1))}
+          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent  border-white p-2 hover:bg-white"
+        >
+          <FiChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => setCurrentImageIndex((prev) => (prev + 1) % 3)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-transparent p-2 hover:bg-white"
+        >
+          <FiChevronRight className="h-6 w-6" />
+        </button>
+      </div>
+
+      {/* Sticky Tab Menu */}
+      <div className="sticky top-0 z-10 flex w-full overflow-x-auto whitespace-nowrap bg-white border-b border-gray-200  ">
+        {Object.keys(sectionRefs).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => handleTabClick(tab)}
+            className={`mx-2 flex-shrink-0  py-2 text-sm font-semibold capitalize  sm:text-base md:text-lg lg:px-6 lg:py-3 ${
+              activeTab === tab
+                ? "border-b-2 border-blue-600 text-blue-600"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content Sections */}
+      <div className="space-y-12">
+        {Object.entries(sectionRefs).map(([tab, ref]) => (
+          <section key={tab} ref={ref} className="scroll-mt-20 p-4">
+            <h2 className="mb-4 text-3xl font-bold capitalize">{tab}</h2>
+            <p className="text-gray-600">Content for {tab}...</p>
+          </section>
+        ))}
+      </div>
     </div>
   );
 };
