@@ -94,20 +94,20 @@ const SingleResortPage = () => {
       </div>
 
       {/* Tab Content Sections */}
-      <div className="space-y-12">
-        <section ref={sectionRefs.overview} className="scroll-mt-20 p-4">
+      <div className="space-y-2">
+        <section ref={sectionRefs.overview} className="scroll-mt-20 py-2">
           <Overview resort={resort} />
         </section>
-        <section ref={sectionRefs.about} className="scroll-mt-20 p-4">
+        <section ref={sectionRefs.about} className="scroll-mt-20 py-2">
           <About resort={resort} />
         </section>
-        <section ref={sectionRefs.rooms} className="scroll-mt-20 p-4">
+        <section ref={sectionRefs.rooms} className="scroll-mt-20 py-2">
           <Rooms resort={resort} />
         </section>
-        <section ref={sectionRefs.accessibility} className="scroll-mt-20 p-4">
+        <section ref={sectionRefs.accessibility} className="scroll-mt-20 py-2">
           <Accessibility resort={resort} />
         </section>
-        <section ref={sectionRefs.policies} className="scroll-mt-20 p-4">
+        <section ref={sectionRefs.policies} className="scroll-mt-20 py-2">
           <Policies resort={resort} />
         </section>
       </div>
