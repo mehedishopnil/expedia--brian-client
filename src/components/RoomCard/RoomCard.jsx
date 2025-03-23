@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const RoomCard = ({ resort }) => {
   const { img2, img3 } = resort;
@@ -22,8 +22,16 @@ const RoomCard = ({ resort }) => {
   const rating = 9.0; // Fixed rating
   const ratingComplement = "Wonderful"; // Fixed complement
 
+  // State for selected extra
+  const [selectedExtra, setSelectedExtra] = useState("no-extras");
+
+  // Price details
+  const basePrice = 139;
+  const breakfastPrice = 40;
+  const totalPrice = selectedExtra === "Breakfast" ? basePrice + breakfastPrice : basePrice;
+
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6">
+    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* Image at the Top */}
       <img
         src={img2 || img3} // Use img2 or img3 from the resort object
@@ -32,12 +40,12 @@ const RoomCard = ({ resort }) => {
       />
 
       {/* Card Content */}
-      <div className="p-4">
+      <div className="p-2">
         {/* Title and Rating */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">King Room</h2>
+          <h2 className="text-xl font-semibold text-gray-800">King Room</h2>
           <div className="flex items-center">
-            <span className="text-sm text-gray-700 mr-2">Guest rating:</span>
+            <span className="text-sm text-gray-600 mr-2">Guest rating:</span>
             <span className="text-sm font-semibold text-blue-600">
               {rating} {ratingComplement}
             </span>
@@ -45,7 +53,7 @@ const RoomCard = ({ resort }) => {
         </div>
 
         {/* Room Details */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">📌</span>
             <span>151 sq ft</span>
@@ -70,16 +78,69 @@ const RoomCard = ({ resort }) => {
 
         {/* Refund Policy */}
         <div className="mt-4">
-          <p className="text-sm text-green-600">Fully refundable</p>
+          <p className="text-sm text-green-600 font-medium">Fully refundable</p>
           <p className="text-sm text-gray-600">Before Fri, Mar 28</p>
         </div>
 
         {/* More Details Link */}
-        <div className="mt-4">
-          <a href="#" className="text-sm text-blue-600 hover:underline">
+        <div className="mt-6 ">
+          <a href="#" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-all duration-300">
             More details &gt;
           </a>
         </div>
+
+        <div className='divider w-full '></div>
+
+        {/* Extras Section */}
+        <div className="mt-6">
+          <h3 className="text-sm font-semibold text-gray-800 mb-3">Extras</h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm text-gray-700">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="extras"
+                  value="no-extras"
+                  checked={selectedExtra === "no-extras"}
+                  onChange={() => setSelectedExtra("no-extras")}
+                  className="mr-2"
+                />
+                <span>No extras</span>
+              </label>
+              <span className="text-green-600">+$0</span>
+            </div>
+            <div className="flex items-center justify-between text-sm text-gray-700">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="extras"
+                  value="Breakfast"
+                  checked={selectedExtra === "Breakfast"}
+                  onChange={() => setSelectedExtra("Breakfast")}
+                  className="mr-2"
+                />
+                <span>Breakfast</span>
+              </label>
+              <span className="text-green-600">+$40</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Price Details */}
+        <div className="mt-6 text-end">
+          <p className="text-2xl font-semibold text-gray-800">${basePrice}</p>
+          <p className="text-sm text-gray-600">${totalPrice} total (includes taxes & fees)</p>
+        </div>
+
+        {/* Reserve Button */}
+        <button className="w-full bg-[#1668e3] text-white font-semibold py-1 px-6 rounded-full hover:bg-blue-600 transition-all duration-300 mt-6">
+          Reserve
+        </button>
+
+        {/* Note */}
+        <p className="text-sm text-gray-600 mt-3 text-center">You will not be charged yet.</p>
+
+        
       </div>
     </div>
   );
