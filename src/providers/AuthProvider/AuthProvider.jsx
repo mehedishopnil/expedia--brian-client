@@ -12,6 +12,8 @@ import {
 import app from "../../firebase/firebase.config";
 
 
+
+
 // Create AuthContext for global state management
 export const AuthContext = createContext();
 
@@ -29,6 +31,8 @@ const AuthProvider = ({ children }) => {
   const [allUsersData, setAllUsersData] = useState([]); 
   const [role, setRole] = useState(null);
 
+
+  console.log(allResortData);
 
   // Function to create user and send data to backend
   const createUser = async (name, email, password, membership) => {

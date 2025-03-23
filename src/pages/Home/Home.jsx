@@ -11,6 +11,7 @@ import bannerImg1 from "../../assets/images/banner-img-1.avif";
 import bannerImg2 from "../../assets/images/banner-img-2.avif";
 import KeyImg from "../../assets/images/Key.avif";
 import CarouselCard from "./HomeContent/CarouselCard";
+import AnnualVacation from "./HomeContent/AnnualVacation";
 
 const Home = () => {
   const [activeFilter, setActiveFilter] = useState("Stays");
@@ -96,6 +97,10 @@ const Home = () => {
       <CarouselCard />
       </div>
 
+      {/* Annual Vacation */}
+          <div>
+            <AnnualVacation />
+          </div>
 
       {/* OneKeyCash */}
  
