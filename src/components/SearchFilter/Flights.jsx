@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaMapMarkerAlt, FaUser, FaCalendarAlt, FaCheck, FaPlus } from "react-icons/fa";
+import { FaMapMarkerAlt, FaUser, FaCalendarAlt, FaCheck, FaPlus, FaMinus } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,6 +22,11 @@ const Flights = () => {
 
   const handleAddFlight = () => {
     setFlights([...flights, { leavingFrom: "", goingTo: "", date: new Date() }]);
+  };
+
+  const handleRemoveFlight = (index) => {
+    const updatedFlights = flights.filter((_, i) => i !== index);
+    setFlights(updatedFlights);
   };
 
   const handleFlightChange = (index, field, value) => {
@@ -287,16 +292,25 @@ const Flights = () => {
             </div>
           </div>
 
-
-          {/* Flight 1 Sections */}
-          <div>
-            <h1 className="text-sm font-semibold">Flight 1</h1>
-          </div>
+          {/* Flight Sections */}
           {flights.map((flight, index) => (
             <div key={index} className="flex flex-col gap-4">
+              {/* Flight Number */}
+              <div className="flex items-center justify-between">
+                <h1 className="text-sm font-semibold">Flight {index + 1}</h1>
+                {index > 0 && (
+                  <button
+                    onClick={() => handleRemoveFlight(index)}
+                    className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700"
+                  >
+                    <FaMinus className="text-sm" />
+                    Remove
+                  </button>
+                )}
+              </div>
+
               {/* Leaving from */}
               <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
-                
                 <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
                 <div className="flex flex-col text-left w-full">
                   <span className="text-sm md:text-base text-gray-700 font-medium">
