@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Stays from "../../components/SearchFilter/Stays";
 import Flights from "../../components/SearchFilter/Flights";
-import Cars from "../../components/SearchFilter/Cars";
+import Cars from "../../components/SearchFilter/Cars/Cars";
 import Packages from "../../components/SearchFilter/Packages";
 import ThingsToDo from "../../components/SearchFilter/ThingsToDo";
 import Cruises from "../../components/SearchFilter/Cruises";
