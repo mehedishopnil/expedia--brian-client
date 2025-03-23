@@ -1,29 +1,33 @@
 import React, { useState } from "react";
-import { FaMapMarkerAlt, FaUser, FaCalendarAlt, FaCheck } from "react-icons/fa";
+import { FaMapMarkerAlt, FaUser, FaCalendarAlt, FaCheck, FaPlus } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Flights = () => {
   const [activeFilter, setActiveFilter] = useState("Roundtrip");
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupType, setPopupType] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [showClassMenu, setShowClassMenu] = useState(false);
   const [selectedClass, setSelectedClass] = useState("Economy");
-
-  const randomLocationFrom = "New York, USA";
-  const randomLocationTo = "Los Angeles, USA";
-  const randomTravelers = `${Math.floor(Math.random() * 5) + 1} travelers`;
-
-  const handleButtonClick = (type) => {
-    setPopupType(type);
-    setShowPopup(true);
-  };
+  const [travelers, setTravelers] = useState(1);
+  const [departureDate, setDepartureDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [flights, setFlights] = useState([
+    { leavingFrom: "", goingTo: "", date: new Date() },
+  ]);
 
   const handleClassSelect = (className) => {
     setSelectedClass(className);
     setShowClassMenu(false); // Close the menu after selection
+  };
+
+  const handleAddFlight = () => {
+    setFlights([...flights, { leavingFrom: "", goingTo: "", date: new Date() }]);
+  };
+
+  const handleFlightChange = (index, field, value) => {
+    const updatedFlights = [...flights];
+    updatedFlights[index][field] = value;
+    setFlights(updatedFlights);
   };
 
   return (
@@ -82,66 +86,80 @@ const Flights = () => {
       {activeFilter === "Roundtrip" && (
         <div className="flex flex-col gap-4">
           {/* Leaving from */}
-          <button
-            onClick={() => handleButtonClick("leaving-from")}
-            className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
-          >
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
             <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
-            <div className="flex flex-col text-left">
+            <div className="flex flex-col text-left w-full">
               <span className="text-sm md:text-base text-gray-700 font-medium">
                 Leaving from
               </span>
-              <span className="text-xs text-gray-500">{randomLocationFrom}</span>
+              <input
+                type="text"
+                placeholder="Enter departure location"
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
             </div>
-          </button>
+          </div>
 
           {/* Going to */}
-          <button
-            onClick={() => handleButtonClick("going-to")}
-            className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
-          >
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
             <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
-            <div className="flex flex-col text-left">
+            <div className="flex flex-col text-left w-full">
               <span className="text-sm md:text-base text-gray-700 font-medium">
                 Going to
               </span>
-              <span className="text-xs text-gray-500">{randomLocationTo}</span>
+              <input
+                type="text"
+                placeholder="Enter destination location"
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
             </div>
-          </button>
+          </div>
 
-          {/* Dates */}
-          <button
-            onClick={() => handleButtonClick("dates")}
-            className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
-          >
+          {/* Departure Date */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
             <FaCalendarAlt className="text-gray-500 text-lg mr-3" />
-            <div className="flex flex-col text-left">
+            <div className="flex flex-col text-left w-full">
               <span className="text-sm md:text-base text-gray-700 font-medium">
-                Dates
+                Departure Date
               </span>
-              <span className="text-xs text-gray-500">
-                {selectedDate.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
+              <DatePicker
+                selected={departureDate}
+                onChange={(date) => setDepartureDate(date)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
             </div>
-          </button>
+          </div>
+
+          {/* Return Date */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaCalendarAlt className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Return Date
+              </span>
+              <DatePicker
+                selected={returnDate}
+                onChange={(date) => setReturnDate(date)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
 
           {/* Travelers */}
-          <button
-            onClick={() => handleButtonClick("travelers")}
-            className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
-          >
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
             <FaUser className="text-gray-500 text-lg mr-3" />
-            <div className="flex flex-col text-left">
+            <div className="flex flex-col text-left w-full">
               <span className="text-sm md:text-base text-gray-700 font-medium">
                 Travelers
               </span>
-              <span className="text-xs text-gray-500">{randomTravelers}</span>
+              <input
+                type="number"
+                value={travelers}
+                onChange={(e) => setTravelers(e.target.value)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
             </div>
-          </button>
+          </div>
 
           {/* Check Options */}
           <div className="flex gap-4 mt-2">
@@ -168,52 +186,187 @@ const Flights = () => {
         </div>
       )}
 
-      {/* Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
-            <h3 className="text-lg font-semibold mb-4">
-              {popupType === "leaving-from"
-                ? "Enter Leaving From"
-                : popupType === "going-to"
-                ? "Enter Going To"
-                : popupType === "dates"
-                ? "Select Dates"
-                : "Enter Travelers"}
-            </h3>
-
-            {/* Date Picker */}
-            {popupType === "dates" ? (
-              <div className="flex justify-center">
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  inline
-                />
-              </div>
-            ) : (
+      {/* One-way Form */}
+      {activeFilter === "One-way" && (
+        <div className="flex flex-col gap-4">
+          {/* Leaving from */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Leaving from
+              </span>
               <input
                 type="text"
-                placeholder={`Enter ${popupType}`}
-                className="w-full border border-gray-300 rounded-lg p-2 mb-4"
+                placeholder="Enter departure location"
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
               />
-            )}
-
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Save
-              </button>
             </div>
           </div>
+
+          {/* Going to */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Going to
+              </span>
+              <input
+                type="text"
+                placeholder="Enter destination location"
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Departure Date */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaCalendarAlt className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Departure Date
+              </span>
+              <DatePicker
+                selected={departureDate}
+                onChange={(date) => setDepartureDate(date)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Travelers */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaUser className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Travelers
+              </span>
+              <input
+                type="number"
+                value={travelers}
+                onChange={(e) => setTravelers(e.target.value)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Check Options */}
+          <div className="flex gap-4 mt-2">
+            <label className="flex items-center gap-2 text-sm md:text-base text-gray-700">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              Add a place to stay
+            </label>
+          </div>
+
+          {/* Search Button */}
+          <button className="w-full bg-[#1668e3] text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base">
+            Search
+          </button>
+        </div>
+      )}
+
+      {/* Multi-city Form */}
+      {activeFilter === "Multi-city" && (
+        <div className="flex flex-col gap-4">
+          {/* Travelers */}
+          <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+            <FaUser className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Travelers
+              </span>
+              <input
+                type="number"
+                value={travelers}
+                onChange={(e) => setTravelers(e.target.value)}
+                className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
+
+
+          {/* Flight 1 Sections */}
+          <div>
+            <h1 className="text-sm font-semibold">Flight 1</h1>
+          </div>
+          {flights.map((flight, index) => (
+            <div key={index} className="flex flex-col gap-4">
+              {/* Leaving from */}
+              <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+                
+                <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
+                <div className="flex flex-col text-left w-full">
+                  <span className="text-sm md:text-base text-gray-700 font-medium">
+                    Leaving from
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Enter departure location"
+                    value={flight.leavingFrom}
+                    onChange={(e) =>
+                      handleFlightChange(index, "leavingFrom", e.target.value)
+                    }
+                    className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Going to */}
+              <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+                <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
+                <div className="flex flex-col text-left w-full">
+                  <span className="text-sm md:text-base text-gray-700 font-medium">
+                    Going to
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Enter destination location"
+                    value={flight.goingTo}
+                    onChange={(e) =>
+                      handleFlightChange(index, "goingTo", e.target.value)
+                    }
+                    className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Date */}
+              <div className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200">
+                <FaCalendarAlt className="text-gray-500 text-lg mr-3" />
+                <div className="flex flex-col text-left w-full">
+                  <span className="text-sm md:text-base text-gray-700 font-medium">
+                    Date
+                  </span>
+                  <DatePicker
+                    selected={flight.date}
+                    onChange={(date) =>
+                      handleFlightChange(index, "date", date)
+                    }
+                    className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Add Another Flight Button */}
+          <button
+            onClick={handleAddFlight}
+            className="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
+          >
+            <FaPlus className="text-gray-500 text-lg" />
+            <span className="text-sm md:text-base text-gray-700 font-medium">
+              Add another flight
+            </span>
+          </button>
+
+          {/* Search Button */}
+          <button className="w-full bg-[#1668e3] text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base">
+            Search
+          </button>
         </div>
       )}
     </div>
