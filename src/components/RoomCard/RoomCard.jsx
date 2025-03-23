@@ -31,7 +31,7 @@ const RoomCard = ({ resort }) => {
   const totalPrice = selectedExtra === "Breakfast" ? basePrice + breakfastPrice : basePrice;
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6  hover:shadow-xl transition-shadow duration-300">
       {/* Image at the Top */}
       <img
         src={img2 || img3} // Use img2 or img3 from the resort object
