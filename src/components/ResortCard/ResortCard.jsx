@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const ResortCard = ({ resort }) => {
   const { _id, img, place_name, location, reviews_amount } = resort;
 
+
   // Generate a random rating between 7 and 10
   const rating = Math.floor(Math.random() * 4) + 7;
 

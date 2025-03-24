@@ -57,7 +57,7 @@ const AnnualVacation = () => {
 
   return (
     <div
-      className="relative bg-cover bg-center h-[650px] my-10 rounded-3xl flex items-center "
+      className="relative bg-cover bg-center h-[650px] my-10 rounded-3xl flex items-center justify-center"
       style={{
         backgroundImage: `url(${bgPhoto})`,
       }}
@@ -66,7 +66,7 @@ const AnnualVacation = () => {
       <div className="absolute rounded-3xl inset-0 bg-black bg-opacity-50"></div>
 
       {/* Content */}
-      <div className="relative z-10 text-start text-white max-w-6xl w-full px-4">
+      <div className="flex flex-col justify-center items-center relative z-10 text-start text-white max-w-6xl w-full px-4">
         {/* Title */}
         <h2 className="text-xl md:text-4xl font-bold mb-6">
           The Annual Vacation Sale: Book by {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}

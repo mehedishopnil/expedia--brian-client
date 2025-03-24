@@ -12,6 +12,7 @@ import bannerImg2 from "../../assets/images/banner-img-2.avif";
 import KeyImg from "../../assets/images/Key.avif";
 import CarouselCard from "./HomeContent/CarouselCard";
 import AnnualVacation from "./HomeContent/AnnualVacation";
+import RecommendedStays from "./HomeContent/RecommendedStays";
 
 const Home = () => {
   const [activeFilter, setActiveFilter] = useState("Stays");
@@ -73,7 +74,7 @@ const Home = () => {
         </div>
 
         <Link to="/signin">
-        <button type="button" className="w-full rounded-full btn mt-4 py-1 text-white bg-blue-500">Sign in</button>
+        <button type="button" className="w-full rounded-full  mt-4 py-1 text-white bg-blue-500">Sign in</button>
         </Link>
       </div>
 
@@ -98,9 +99,12 @@ const Home = () => {
       </div>
 
       {/* Annual Vacation */}
-          <div>
+          <div className="flex justify-center">
             <AnnualVacation />
           </div>
+
+          {/* Recommended stays*/}
+          <RecommendedStays />
 
       {/* OneKeyCash */}
  
