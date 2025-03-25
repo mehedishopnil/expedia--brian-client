@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 const RoomCard = ({ resort }) => {
-  const { img2, img3 } = resort;
+  const { _id, img2, img3 } = resort;
   const {
     sleeps_room,
     privacy_room_amount,
@@ -68,7 +68,7 @@ const RoomCard = ({ resort }) => {
       // Redirect to login page with the reservation data and return path
       navigate('/signin', { 
         state: { 
-          from: 'reservation', 
+          from: `/singleResortPage/${_id}`, 
           reservationData,
           returnPath: '/payment' // Path to redirect after login
         } 
