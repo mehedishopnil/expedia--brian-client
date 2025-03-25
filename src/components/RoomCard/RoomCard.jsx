@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 const RoomCard = ({ resort }) => {
   const { img2, img3 } = resort;
@@ -19,22 +21,69 @@ const RoomCard = ({ resort }) => {
   } = resort.room_details;
 
   // Fixed rating and complement
-  const rating = 9.0; // Fixed rating
-  const ratingComplement = "Wonderful"; // Fixed complement
+  const rating = 9.0;
+  const ratingComplement = "Wonderful";
 
   // State for selected extra
   const [selectedExtra, setSelectedExtra] = useState("no-extras");
+  const { user } = useContext(AuthContext);
 
   // Price details
   const basePrice = 139;
   const breakfastPrice = 40;
   const totalPrice = selectedExtra === "Breakfast" ? basePrice + breakfastPrice : basePrice;
 
+  // Navigation hook
+  const navigate = useNavigate();
+
+  const handleReserveClick = () => {
+    // Prepare reservation data
+    const reservationData = {
+      resort: {
+        id: resort.id,
+        name: resort.name,
+        images: [img2, img3],
+        // include any other resort details you need
+      },
+      room: {
+        type: "King Room",
+        sleeps: sleeps_room,
+        size: "151 sq ft",
+        bed: "1 King Bed",
+        amenities: {
+          wifi: true,
+          kitchen: kitchen,
+          bath: bath
+        }
+      },
+      pricing: {
+        basePrice: basePrice,
+        extras: selectedExtra === "Breakfast" ? breakfastPrice : 0,
+        totalPrice: totalPrice
+      },
+      selectedExtra: selectedExtra
+    };
+
+    if (!user) {
+      // Redirect to login page with the reservation data and return path
+      navigate('/signin', { 
+        state: { 
+          from: 'reservation', 
+          reservationData,
+          returnPath: '/payment' // Path to redirect after login
+        } 
+      });
+    } else {
+      // User is logged in, proceed to payment
+      navigate('/payment', { state: { reservationData } });
+    }
+  };
+
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6  hover:shadow-xl transition-shadow duration-300">
+    <div className="border border-gray-300 rounded-lg overflow-hidden mb-6 hover:shadow-xl transition-shadow duration-300">
       {/* Image at the Top */}
       <img
-        src={img2 || img3} // Use img2 or img3 from the resort object
+        src={img2 || img3}
         alt="Room"
         className="w-full h-48 object-cover"
       />
@@ -83,13 +132,13 @@ const RoomCard = ({ resort }) => {
         </div>
 
         {/* More Details Link */}
-        <div className="mt-6 ">
+        <div className="mt-6">
           <a href="#" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-all duration-300">
             More details &gt;
           </a>
         </div>
 
-        <div className='divider w-full '></div>
+        <div className='divider w-full'></div>
 
         {/* Extras Section */}
         <div className="mt-6">
@@ -133,14 +182,15 @@ const RoomCard = ({ resort }) => {
         </div>
 
         {/* Reserve Button */}
-        <button className="w-full bg-[#1668e3] text-white font-semibold py-1 px-6 rounded-full hover:bg-blue-600 transition-all duration-300 mt-6">
+        <button 
+          onClick={handleReserveClick}
+          className="w-full bg-[#1668e3] text-white font-semibold py-1 px-6 rounded-full hover:bg-blue-600 transition-all duration-300 mt-6"
+        >
           Reserve
         </button>
 
         {/* Note */}
         <p className="text-sm text-gray-600 mt-3 text-center">You will not be charged yet.</p>
-
-        
       </div>
     </div>
   );

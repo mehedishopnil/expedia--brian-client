@@ -6,6 +6,8 @@ import Registration from "../pages/Registration/Registration";
 import Hotels from "../pages/Hotels/Hotels";
 import SingleResortPage from "../components/SingleResortPage/SingleResortPage";
 import HotelSearch from "../components/HotelSearch/HotelSearch";
+import Payment from "../components/Payment/Payment";
+import Checkout from "../components/Checkout/Checkout";
 
 
 
@@ -38,6 +40,14 @@ export const router = createBrowserRouter([
                     path: "hotel-search",
                     element: <HotelSearch/>
 
+               }, 
+               {
+                    path: "payment",
+                    element: <Payment />
+               },
+               {
+                    path: "checkout",
+                    element: <Checkout />
                }
           ]
      }
