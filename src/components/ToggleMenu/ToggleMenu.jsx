@@ -1,35 +1,61 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaSearch, FaQuestionCircle, FaHotel } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { BsFlag } from "react-icons/bs";
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
 
 const ToggleMenu = ({ closeMenu }) => {
+  const { signOut, user } = useContext(AuthContext);
+  
   // Function to handle clicks on menu items
   const handleMenuItemClick = () => {
     closeMenu(); // Close the menu when an option is clicked
+  };
+
+  // Function to handle sign out
+  const handleSignOut = () => {
+    signOut();
+    closeMenu();
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md w-full max-w-[320px] p-4">
       {/* Title */}
       <h3 className="text-[14px] font-semibold text-gray-900 mb-2 leading-snug">
-        Unlock instant savings with <br />
-        <span className="text-blue-600">Member Prices.</span>
+        {user ? (
+          `Welcome, ${user.displayName || user.email || 'Member'}!`
+        ) : (
+          <>
+            Unlock instant savings with <br />
+            <span className="text-blue-600">Member Prices.</span>
+          </>
+        )}
       </h3>
 
-      {/* Sign In Button */}
-      <Link to="/signin" onClick={handleMenuItemClick}>
-        <button className="w-full bg-blue-600 text-white font-medium text-[14px] py-1 rounded-full hover:bg-blue-700 transition-all duration-200">
-          Sign in
+      {/* Sign In/Sign Out Button */}
+      {user ? (
+        <button 
+          onClick={handleSignOut}
+          className="w-full bg-blue-600 text-white font-medium text-[14px] py-1 rounded-full hover:bg-blue-700 transition-all duration-200"
+        >
+          Sign out
         </button>
-      </Link>
+      ) : (
+        <Link to="/signin" onClick={handleMenuItemClick}>
+          <button className="w-full bg-blue-600 text-white font-medium text-[14px] py-1 rounded-full hover:bg-blue-700 transition-all duration-200">
+            Sign in
+          </button>
+        </Link>
+      )}
 
       {/* Learn More */}
-      <p className="text-gray-600 text-[12px] text-center mt-1 cursor-pointer hover:text-blue-600" onClick={handleMenuItemClick}>
-        Learn more
-      </p>
+      {!user && (
+        <p className="text-gray-600 text-[12px] text-center mt-1 cursor-pointer hover:text-blue-600" onClick={handleMenuItemClick}>
+          Learn more
+        </p>
+      )}
 
       {/* Divider */}
       <hr className="border-gray-300 my-3" />
