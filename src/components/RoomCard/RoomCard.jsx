@@ -39,12 +39,7 @@ const RoomCard = ({ resort }) => {
   const handleReserveClick = () => {
     // Prepare reservation data
     const reservationData = {
-      resort: {
-        id: resort.id,
-        name: resort.name,
-        images: [img2, img3],
-        // include any other resort details you need
-      },
+      resort,
       room: {
         type: "King Room",
         sleeps: sleeps_room,
@@ -64,13 +59,15 @@ const RoomCard = ({ resort }) => {
       selectedExtra: selectedExtra
     };
 
+    console.log(reservationData);
+
     if (!user) {
       // Redirect to login page with the reservation data and return path
       navigate('/signin', { 
         state: { 
           from: `/singleResortPage/${_id}`, 
           reservationData,
-          returnPath: '/payment' // Path to redirect after login
+          returnPath: '/payment'
         } 
       });
     } else {
@@ -113,7 +110,7 @@ const RoomCard = ({ resort }) => {
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">📎</span>
-            <span>1 King Bed</span>
+            <span>2 King Bed</span>
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">✓</span>

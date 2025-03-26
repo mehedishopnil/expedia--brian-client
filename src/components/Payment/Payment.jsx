@@ -7,6 +7,8 @@ const Payment = () => {
   const location = useLocation();
   const reservationData = location.state?.reservationData;
   const basePrice = reservationData?.pricing?.totalPrice || 0;
+
+  console.log(reservationData)
   
   // Calculate taxes and fees
   const tax = basePrice * 0.20; // 20% tax
