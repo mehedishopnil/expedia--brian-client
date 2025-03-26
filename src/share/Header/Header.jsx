@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdDownload } from "react-icons/io";
 import { FaBed, FaPlane, FaCar, FaGift, FaUmbrellaBeach, FaShip, FaUserCircle } from "react-icons/fa";
 import logo from "../../assets/images/Travel+Leisure-logo.png";
 import ToggleMenu from "../../components/ToggleMenu/ToggleMenu";
+import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
 
 const Header = () => {
   const [isShopTravelOpen, setShopTravelOpen] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const toggleShopTravel = () => {
     setShopTravelOpen((prev) => !prev);
@@ -60,9 +62,20 @@ const Header = () => {
             <span className="text-[15px] md:text-xl">Get the App</span>
           </button>
 
-          {/* User Icon for Mobile Menu */}
-          <button onClick={toggleUserMenu} className="text-gray-700 hover:text-gray-900 focus:outline-none">
-            <FaUserCircle size={24} />
+          {/* User Icon/Photo for Mobile Menu */}
+          <button 
+            onClick={toggleUserMenu} 
+            className="text-gray-700 hover:text-gray-900 focus:outline-none"
+          >
+            {user?.photoURL ? (
+              <img 
+                src={user.photoURL} 
+                alt="User profile" 
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <FaUserCircle size={24} />
+            )}
           </button>
         </div>
 
@@ -72,7 +85,28 @@ const Header = () => {
           <Link to="/list-your-property" className="font-semibold text-lg text-gray-700 hover:text-gray-900">List your property</Link>
           <Link to="/support" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Support</Link>
           <Link to="/trips" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Trips</Link>
-          <Link to="/sign-in" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Sign in</Link>
+          
+          {/* Desktop User Icon/Photo */}
+          <button 
+            onClick={toggleUserMenu} 
+            className="font-semibold text-lg text-gray-700 hover:text-gray-900 flex items-center gap-1"
+          >
+            {user?.photoURL ? (
+              <>
+                <img 
+                  src={user.photoURL} 
+                  alt="User profile" 
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+                <span>Account</span>
+              </>
+            ) : (
+              <>
+                <FaUserCircle size={20} />
+                <span>Sign in</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
