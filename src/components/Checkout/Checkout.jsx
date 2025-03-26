@@ -371,11 +371,11 @@ const Checkout = () => {
 
             <div className="flex text-[8px] sm:flex-row gap-3 mb-6">
               <button className="btn btn-outline flex-1">
-                <BsCreditCard className="mr-2" />
+                <BsCreditCard className="" />
                 <span className="text-[10px]">Debit/Credit Card</span>
               </button>
               <button className="btn btn-outline flex-1">
-                <BsPaypal className="mr-2" />
+                <BsPaypal className="" />
                 <span className="text-[10px]">PayPal</span>
               </button>
               <button className="btn btn-outline flex-1">
@@ -400,7 +400,7 @@ const Checkout = () => {
                   key={card}
                   src={`https://logo.clearbit.com/${card}.com`}
                   alt={card}
-                  className="w-10 h-6 "
+                  className="w-12 h-8 "
                 />
               ))}
             </div>
