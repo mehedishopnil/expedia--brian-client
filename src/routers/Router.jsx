@@ -8,6 +8,7 @@ import SingleResortPage from "../components/SingleResortPage/SingleResortPage";
 import HotelSearch from "../components/HotelSearch/HotelSearch";
 import Payment from "../components/Payment/Payment";
 import Checkout from "../components/Checkout/Checkout";
+import Account from "../pages/Account/Account";
 
 
 
@@ -48,7 +49,13 @@ export const router = createBrowserRouter([
                {
                     path: "checkout",
                     element: <Checkout />
+               },
+               {
+                    path: "account",
+                    element: <Account />
                }
           ]
-     }
+     },
+
+     
 ])
