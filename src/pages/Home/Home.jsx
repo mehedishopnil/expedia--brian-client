@@ -85,12 +85,10 @@ const Home = () => {
           <h1 className="text-3xl  font-[times-new-roman]">The Annual Vacation Sale: Save 25%+</h1>
           <p className="text-sm">Members save 25% or more on select hotels until Mar 31. And now more choices to get there with Southwest Airlines on Expedia.</p>
           <Link to="/">
-            <button type="button" className="w-1/2 rounded-full btn mt-4 py-1 text-white bg-blue-500">Unlock vacation deals </button>
+            <button type="button" className="w-1/2 text-xl rounded-full btn mt-4 py-1 text-white bg-blue-500">Unlock vacation deals </button>
           </Link>
         </div>
-
         <img src={bannerImg1} alt="" className="h-full w-full covered rounded-b"/>
-
       </div>
 
       {/* Carousel Card */}
