@@ -69,7 +69,7 @@ const Account = () => {
           />
         </div>
         <div>
-          <h1 className="text-xl font-semibold">Hi, {user?.displayName || 'User'}</h1>
+          <h1 className="text-xl font-semibold">Hi, {user?.name || 'User'}</h1>
           <p className="text-gray-600">{user?.email}</p>
         </div>
       </div>
