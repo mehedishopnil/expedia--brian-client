@@ -51,58 +51,65 @@ const ToggleMenu = ({ closeMenu }) => {
       <hr className="border-gray-300 my-3" />
 
       {/* Menu Items */}
-      <div className="space-y-3">
+      {/* Menu Items */}
+<div className="space-y-3">
 
-        <Link to="/hotels" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaHotel />} text="Hotels" />
-        </Link>
+<Link to="/hotels" onClick={handleMenuItemClick}>
+  <MenuItem icon={<FaHotel />} text="Hotels" />
+</Link>
 
-        <Link to="/account" onClick={handleMenuItemClick}>
-          <MenuItem icon={<MdAccountCircle />} text="Account" />
-        </Link>
+{user && (
+  <>
+    <Link to="/account" onClick={handleMenuItemClick}>
+      <MenuItem icon={<MdAccountCircle />} text="Account" />
+    </Link>
+    <Link to="/user-dashboard" onClick={handleMenuItemClick}>
+      <MenuItem icon={<MdOutlineTravelExplore />} text="Dashboard" />
+    </Link>
+  </>
+)}
 
-        <Link to="/inbox" onClick={handleMenuItemClick}>
-          <MenuItem icon={<IoMdMail />} text="Inbox" />
-        </Link>
+<Link to="/inbox" onClick={handleMenuItemClick}>
+  <MenuItem icon={<IoMdMail />} text="Inbox" />
+</Link>
 
-        <Link to="/shop-travel" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaSearch />} text="Shop travel" />
-        </Link>
+<Link to="/shop-travel" onClick={handleMenuItemClick}>
+  <MenuItem icon={<FaSearch />} text="Shop travel" />
+</Link>
 
-        <Link to="/support" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaQuestionCircle />} text="Support" />
-        </Link>
+<Link to="/support" onClick={handleMenuItemClick}>
+  <MenuItem icon={<FaQuestionCircle />} text="Support" />
+</Link>
 
-        <Link to="/language-currency" onClick={handleMenuItemClick}>
-          <MenuItem icon={<BsFlag />} text="English • USD $" />
-        </Link>
+<Link to="/language-currency" onClick={handleMenuItemClick}>
+  <MenuItem icon={<BsFlag />} text="English • USD $" />
+</Link>
 
-        {/* Divider */}
-        <hr className="border-gray-300" />
+<hr className="border-gray-300" />
 
-        <Link to="/list-your-property" onClick={handleMenuItemClick}>
-          <MenuItem icon={<MdOutlineTravelExplore />} text="List your property" />
-        </Link>
-        <Link to="/trips" onClick={handleMenuItemClick}>
-          <MenuItem text="Trips" />
-        </Link>
-        <Link to="/feedback" onClick={handleMenuItemClick}>
-          <MenuItem text="Feedback" />
-        </Link>
+<Link to="/list-your-property" onClick={handleMenuItemClick}>
+  <MenuItem icon={<MdOutlineTravelExplore />} text="List your property" />
+</Link>
+<Link to="/trips" onClick={handleMenuItemClick}>
+  <MenuItem text="Trips" />
+</Link>
+<Link to="/feedback" onClick={handleMenuItemClick}>
+  <MenuItem text="Feedback" />
+</Link>
 
-        {/* Sign Out Button at Bottom for Logged-in Users */}
-        {user && (
-          <>
-            <hr className="border-gray-300" />
-            <button 
-              onClick={handleSignOut}
-              className="w-full text-gray-600 font-medium text-[13px] py-1 rounded-md hover:bg-gray-100 transition-all duration-200 flex items-center gap-2 px-2"
-            >
-              <span>Sign out</span>
-            </button>
-          </>
-        )}
-      </div>
+{user && (
+  <>
+    <hr className="border-gray-300" />
+    <button 
+      onClick={handleSignOut}
+      className="w-full text-gray-600 font-medium text-[13px] py-1 rounded-md hover:bg-gray-100 transition-all duration-200 flex items-center gap-2 px-2"
+    >
+      <span>Sign out</span>
+    </button>
+  </>
+)}
+</div>
+
     </div>
   );
 };

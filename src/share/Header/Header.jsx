@@ -42,7 +42,9 @@ const Header = () => {
             {isShopTravelOpen && (
               <div className="absolute top-10 left-0 bg-white shadow-lg rounded-lg p-4 z-50 w-64">
                 <ul className="space-y-3">
+                  
                   <li><Link to="/stays" className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><FaBed className="text-gray-500" /> Stays</Link></li>
+                  
                   <li><Link to="/flights" className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><FaPlane className="text-gray-500" /> Flights</Link></li>
                   <li><Link to="/cars" className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><FaCar className="text-gray-500" /> Cars</Link></li>
                   <li><Link to="/packages" className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><FaGift className="text-gray-500" /> Packages</Link></li>
@@ -84,9 +86,17 @@ const Header = () => {
           <Link to="/get-the-app" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Get the App</Link>
           <Link to="/list-your-property" className="font-semibold text-lg text-gray-700 hover:text-gray-900">List your property</Link>
           <Link to="/support" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Support</Link>
-          <Link to="/trips" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Trips</Link>
           
-          {/* Desktop User Icon/Photo */}
+          {/* Only show Trips link if user is logged in */}
+          {user && (
+            <>
+              <Link to="/trips" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Trips</Link>
+              <Link to="/account" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Account</Link>
+              <Link to="/dashboard" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Dashboard</Link>
+            </>
+          )}
+          
+          {/* User Icon/Photo */}
           <button 
             onClick={toggleUserMenu} 
             className="font-semibold text-lg text-gray-700 hover:text-gray-900 flex items-center gap-1"
@@ -98,7 +108,6 @@ const Header = () => {
                   alt="User profile" 
                   className="w-8 h-8 rounded-full object-cover"
                 />
-                <span>Account</span>
               </>
             ) : (
               <>
@@ -110,7 +119,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* User Menu - Popup from Right (Not Fixed) */}
+      {/* User Menu - Popup from Right */}
       {isUserMenuOpen && (
         <div className="absolute top-16 right-0 w-[350px] bg-white shadow-lg rounded-md transition-transform duration-300 z-50 ease-in-out transform translate-x-0">
           <ToggleMenu closeMenu={toggleUserMenu} />
