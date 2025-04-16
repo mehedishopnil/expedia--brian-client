@@ -13,6 +13,8 @@ import UserDashboard from "../layout/UserDashboard/UserDashboard";
 import Profile from "../pages/Profile/Profile";
 import Communications from "../pages/Communications/Communications";
 import ConfirmBooking from "../components/ConfirmBooking/ConfirmBooking";
+import UserOverview from "../pages/UserOverview/UserOverview";
+import MyBookings from "../pages/MyBookings/MyBookings";
 
 export const router = createBrowserRouter([
   {
@@ -76,7 +78,12 @@ export const router = createBrowserRouter([
     element: <UserDashboard />,
     children: [
       {
-        
+        path: "user-overview",
+        element: <UserOverview />,
+      },
+      {
+        path: "my-bookings",
+        element: <MyBookings />,
       }
     ]
   }

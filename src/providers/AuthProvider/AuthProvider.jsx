@@ -30,6 +30,9 @@ const AuthProvider = ({ children }) => {
   const [allResortData, setAllResortData] = useState([]);
   const [allUsersData, setAllUsersData] = useState([]); 
   const [role, setRole] = useState(null);
+  const [bookingsData, setBookingsData] = useState([]);
+
+  console.log(bookingsData);
 
 
 
@@ -478,6 +481,34 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  //Fetch Booking Data
+  const fetchBookings = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_Link}/bookings?email=${user.email}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch bookings');
+      }
+  
+      const data = await response.json();
+      setBookingsData(data.data); // Store the fetched data in state
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      // Handle error as needed
+    }
+  };
+  
+  // Call this function when component mounts or when user.email changes
+  useEffect(() => {
+    if (user?.email) {
+      fetchBookings();
+    }
+  }, [user?.email]);
+
 
   // Fetch all resort data when the component mounts
 useEffect(() => {
@@ -507,6 +538,7 @@ useEffect(() => {
     filteredData,
     allResortData,
     allUsersData,
+    bookingsData,
     fetchResortData,
     createUser,
     login,

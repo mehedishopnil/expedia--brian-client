@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -12,6 +12,7 @@ import PaymentMethod from "./CheckoutContent/PaymentMethod";
 import ResortCardInfo from "./CheckoutContent/ResortCardInfo";
 import GuestInfoCard from "./CheckoutContent/GuestInfoCard";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
 
 const Checkout = () => {
   const location = useLocation();
@@ -34,6 +35,8 @@ const Checkout = () => {
     zipCode: "",
     specialRequests: ""
   });
+  
+  const {user} = useContext(AuthContext);
 
   console.log(paymentData);
 
@@ -86,6 +89,7 @@ const Checkout = () => {
       // Prepare booking data according to server expectations
       const bookingData = {
         resortId: paymentData.resort._id, // Assuming your server expects resortId
+        email: user.email, // Use the email from AuthContext
         roomId: paymentData.room._id,     // Assuming your server expects roomId
         startDate: new Date().toISOString(),
         endDate: new Date(Date.now() + 86400000).toISOString(),
