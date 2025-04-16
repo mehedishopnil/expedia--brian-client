@@ -92,7 +92,7 @@ const Header = () => {
             <>
               <Link to="/trips" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Trips</Link>
               <Link to="/account" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Account</Link>
-              <Link to="/dashboard" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Dashboard</Link>
+              <Link to="/user-dashboard/user-overview" className="font-semibold text-lg text-gray-700 hover:text-gray-900">Dashboard</Link>
             </>
           )}
           

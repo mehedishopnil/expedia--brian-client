@@ -63,7 +63,7 @@ const ToggleMenu = ({ closeMenu }) => {
     <Link to="/account" onClick={handleMenuItemClick}>
       <MenuItem icon={<MdAccountCircle />} text="Account" />
     </Link>
-    <Link to="/user-dashboard" onClick={handleMenuItemClick}>
+    <Link to="/user-dashboard/user-overview" onClick={handleMenuItemClick}>
       <MenuItem icon={<MdOutlineTravelExplore />} text="Dashboard" />
     </Link>
   </>
