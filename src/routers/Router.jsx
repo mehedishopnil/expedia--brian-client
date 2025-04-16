@@ -12,6 +12,7 @@ import Account from "../pages/Account/Account";
 import UserDashboard from "../layout/UserDashboard/UserDashboard";
 import Profile from "../pages/Profile/Profile";
 import Communications from "../pages/Communications/Communications";
+import ConfirmBooking from "../components/ConfirmBooking/ConfirmBooking";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,18 @@ export const router = createBrowserRouter([
         element: <HotelSearch />,
       },
       {
+          path: "/account",
+          element: <Account />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
+        {
+          path: "communications",
+          element: <Communications />,
+        },
+      {
         path: "payment",
         element: <Payment />,
       },
@@ -51,17 +64,10 @@ export const router = createBrowserRouter([
         element: <Checkout />,
       },
       {
-        path: "/account",
-        element: <Account />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "communications",
-        element: <Communications />,
-      },
+          path: "confirm-booking",
+          element: <ConfirmBooking />,
+      }
+      
     ],
   },
 ]);

@@ -1,22 +1,154 @@
 import React, { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
 import {
   FaChevronLeft,
   FaChevronRight,
   FaCheck,
-  FaWifi,
-  FaLock,
   FaShieldAlt,
 } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { BsCreditCard, BsPaypal } from "react-icons/bs";
-import { BiCalendar } from "react-icons/bi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import ImportantInfo from "./CheckoutContent/ImportantInfo";
+import PaymentMethod from "./CheckoutContent/PaymentMethod";
+import ResortCardInfo from "./CheckoutContent/ResortCardInfo";
+import GuestInfoCard from "./CheckoutContent/GuestInfoCard";
+import Swal from "sweetalert2";
 
 const Checkout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const paymentData = location.state?.paymentData;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showSpecialRequests, setShowSpecialRequests] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    textAlerts: false,
+    cardName: "",
+    cardNumber: "",
+    expiryMonth: "1",
+    expiryYear: new Date().getFullYear().toString(),
+    securityCode: "",
+    zipCode: "",
+    specialRequests: ""
+  });
+
+  console.log(paymentData);
+
+  const { paymentDetails, pricing, resort, room } = paymentData;
+  const { baseAmount, fees, refundableDate, tax, totalAmount } = paymentDetails;
+  const { room_details } = resort;
+  const { privacy_room_amount } = room_details;
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const validateForm = () => {
+    // Basic validation - extend as needed
+    if (!formData.firstName || !formData.lastName) {
+      Swal.fire("Error", "Please enter your full name", "error");
+      return false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      Swal.fire("Error", "Please enter a valid email address", "error");
+      return false;
+    }
+    if (!formData.phone || formData.phone.length < 10) {
+      Swal.fire("Error", "Please enter a valid phone number", "error");
+      return false;
+    }
+    if (!formData.cardNumber || formData.cardNumber.replace(/\s/g, '').length !== 16) {
+      Swal.fire("Error", "Please enter a valid 16-digit card number", "error");
+      return false;
+    }
+    if (!formData.securityCode || formData.securityCode.length < 3) {
+      Swal.fire("Error", "Please enter a valid security code", "error");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+
+    try {
+      // Prepare booking data according to server expectations
+      const bookingData = {
+        resortId: paymentData.resort._id, // Assuming your server expects resortId
+        roomId: paymentData.room._id,     // Assuming your server expects roomId
+        startDate: new Date().toISOString(),
+        endDate: new Date(Date.now() + 86400000).toISOString(),
+        resort, // +1 day
+        guestInfo: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          specialRequests: formData.specialRequests,
+        },
+        paymentInfo: {
+          cardName: formData.cardName,
+          cardNumber: formData.cardNumber.replace(/\s/g, ''), // Remove spaces
+          expiry: `${formData.expiryMonth}/${formData.expiryYear}`,
+          securityCode: formData.securityCode,
+          zipCode: formData.zipCode,
+        },
+        totalAmount: paymentData.paymentDetails.totalAmount,
+        status: "confirmed"
+      };
+
+      const response = await fetch(`${import.meta.env.VITE_API_Link}/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}` // Add if your API requires auth
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || "Booking failed");
+      }
+
+      await Swal.fire({
+        title: "Success!",
+        text: "Your booking has been confirmed",
+        icon: "success",
+        confirmButtonText: "View Booking"
+      });
+
+      navigate("/confirm-booking", {
+        state: {
+          bookingData: responseData.data, // Use the data returned from server
+          bookingId: responseData.bookingId
+        },
+        replace: true
+      });
+
+    } catch (error) {
+      console.error("Booking error:", error);
+      await Swal.fire({
+        title: "Error",
+        text: error.message || "There was an error processing your booking. Please try again.",
+        icon: "error"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!paymentData) {
     return (
@@ -38,64 +170,10 @@ const Checkout = () => {
     );
   }
 
-  // Extract data exactly as provided
-  const { paymentDetails, pricing, resort, room } = paymentData;
-  const {
-    baseAmount,
-    fees,
-    isDeposit,
-    refundableDate,
-    tax,
-    totalAmount,
-    type: paymentType,
-  } = paymentDetails;
-  const {
-    img,
-    img2,
-    img3,
-    location: resortLocation,
-    place_name,
-    room_details,
-    reviews_amount,
-  } = resort;
-  const { privacy_room_amount } = room_details;
-  const { amenities, bed, size, sleeps, type } = room;
-
-  // Prepare images array
-  const images = [img, img2, img3].filter(Boolean);
-
-  // Generate random rating (7-10)
-  const rating = Math.floor(Math.random() * 4) + 7;
-  const ratingText =
-    rating >= 9 ? "Wonderful" : rating >= 8 ? "Excellent" : "Very Good";
-
-  // Date functions
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const formatDate = (date) =>
-    date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-  // Image slider functions
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
+  
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-6">
-      {/* Header */}
+    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto p-4 md:p-6">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Secure Booking</h1>
         <Link
@@ -108,127 +186,9 @@ const Checkout = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Resort Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            {/* Image Slider */}
-            <div className="relative h-48 md:h-64 bg-gray-200">
-              {images.length > 0 && (
-                <>
-                  <img
-                    src={images[currentImageIndex]}
-                    alt={place_name}
-                    className="w-full h-full object-cover"
-                  />
-                  {images.length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
-                      >
-                        <FaChevronLeft />
-                      </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
-                      >
-                        <FaChevronRight />
-                      </button>
-                      <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-1">
-                        {images.map((_, index) => (
-                          <div
-                            key={index}
-                            className={`w-2 h-2 rounded-full ${
-                              index === currentImageIndex
-                                ? "bg-white"
-                                : "bg-white bg-opacity-50"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              )}
-            </div>
-
-            <div className="p-4 md:p-6">
-              <h2 className="text-xl font-bold text-gray-800">{place_name}</h2>
-
-              {/* Rating */}
-              <div className="flex items-center mt-2">
-                <div className="bg-blue-600 text-white px-2 py-1 rounded-md text-sm font-bold mr-2">
-                  {rating.toFixed(1)}
-                </div>
-                <span className="font-medium">{ratingText}</span>
-                <span className="text-gray-500 text-sm ml-2">
-                  ({reviews_amount} reviews)
-                </span>
-              </div>
-
-              <div className="divider my-3" />
-
-              {/* Room Info */}
-              <div className="space-y-2">
-                <p className="font-medium">
-                  ${privacy_room_amount} • {type}
-                </p>
-                <p className="text-gray-600">
-                  {bed} • Sleeps {sleeps}
-                </p>
-                <div className="flex justify-between mt-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Check-in</p>
-                    <p className="font-medium">{formatDate(today)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Check-out</p>
-                    <p className="font-medium">{formatDate(tomorrow)}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="divider my-3" />
-
-              {/* VIP Access */}
-              <div className="flex items-start">
-                <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-md text-xs font-bold mr-3">
-                  VIP
-                </span>
-                <p className="text-gray-700 flex-1">
-                  Expect outstanding service at this top-rated VIP Access stay.
-                </p>
-              </div>
-
-              <div className="divider my-3" />
-
-              {/* Special Requests */}
-              <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setShowSpecialRequests(!showSpecialRequests)}
-              >
-                <p className="font-medium">
-                  Special/Accessibility requests (optional)
-                </p>
-                <FaChevronRight
-                  className={`transition-transform ${
-                    showSpecialRequests ? "rotate-90" : ""
-                  }`}
-                />
-              </div>
-
-              {showSpecialRequests && (
-                <div className="mt-3">
-                  <textarea
-                    className="textarea textarea-bordered w-full"
-                    placeholder="Enter any special requests..."
-                    rows={3}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Resort Card with data */}
+          <ResortCardInfo resort={resort} room={room} />
 
           <div className="flex items-start mt-4 bg-blue-50 p-3 border rounded-lg">
             <FaCheck className="text-green-500 mt-1 mr-2" />
@@ -237,7 +197,7 @@ const Checkout = () => {
             </p>
           </div>
 
-          {/* Price Details Card */}
+          {/* Price Details */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               Price Details
@@ -279,312 +239,17 @@ const Checkout = () => {
             </p>
           </div>
 
-          {/* Guest Info Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Who's checking in?
-            </h2>
+          {/* Guest Info */}
+          <GuestInfoCard formData={formData} handleChange={handleChange} />
 
-            <div className="mb-6">
-              <p className="font-medium">
-                Room 1: 2 Adults, {bed}, Non-smoking
-              </p>
-              <div className="flex items-center mt-1 text-green-600">
-                <FaWifi className="mr-2" />
-                <span>Free wifi</span>
-              </div>
-            </div>
+          {/* Payment Method */}
+          <PaymentMethod formData={formData} handleChange={handleChange} />
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  First name (required)
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last name (required)
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email address (required)
-                </label>
-                <input
-                  type="email"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Mobile phone number (required)
-                </label>
-                <input
-                  type="tel"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div className="flex items-start">
-                <input
-                  type="checkbox"
-                  id="text-alerts"
-                  className="checkbox checkbox-sm mt-1 mr-2"
-                />
-                <label htmlFor="text-alerts" className="text-sm text-gray-700">
-                  Receive text alerts about this trip. Message and data rates
-                  may apply.
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* Payment Method Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Payment method
-            </h2>
-
-            <div className="space-y-2 mb-6">
-              <div className="flex items-start">
-                <FaCheck className="text-green-500 mt-1 mr-2" />
-                <p className="text-gray-700">We use secure transmission</p>
-              </div>
-              <div className="flex items-start">
-                <FaCheck className="text-green-500 mt-1 mr-2" />
-                <p className="text-gray-700">
-                  We protect your personal information
-                </p>
-              </div>
-            </div>
-
-            <div className="flex text-[8px] sm:flex-row gap-3 mb-6">
-              <button className="btn btn-outline flex-1">
-                <BsCreditCard className="" />
-                <span className="text-[10px]">Debit/Credit Card</span>
-              </button>
-              <button className="btn btn-outline flex-1">
-                <BsPaypal className="" />
-                <span className="text-[10px]">PayPal</span>
-              </button>
-              <button className="btn btn-outline flex-1">
-              <span className="text-[10px]">Monthly Payments</span>
-                
-              </button>
-            </div>
-
-            <Link
-              to="#"
-              className="text-blue-600 hover:underline text-sm mb-6 inline-block"
-            >
-              Click-to-Pay
-            </Link>
-
-            <div className="divider my-3" />
-
-            {/* Credit Card Icons */}
-            <div className="flex space-x-4 mb-6">
-              {["visa", "mastercard", "amex", "discover"].map((card) => (
-                <img
-                  key={card}
-                  src={`https://logo.clearbit.com/${card}.com`}
-                  alt={card}
-                  className="w-12 h-8 "
-                />
-              ))}
-            </div>
-
-            {/* Payment Form */}
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Name on Card*
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Debit/Credit card number*
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Expiration date*
-                  </label>
-                  <div className="flex items-center input input-bordered pr-0">
-                    <select className="flex-1 border-none focus:outline-none">
-                      {Array.from({ length: 12 }, (_, i) => (
-                        <option key={i} value={i + 1}>
-                          {i + 1}
-                        </option>
-                      ))}
-                    </select>
-                    <span className="mx-2">/</span>
-                    <select className="flex-1 border-none focus:outline-none">
-                      {Array.from({ length: 10 }, (_, i) => (
-                        <option key={i} value={new Date().getFullYear() + i}>
-                          {new Date().getFullYear() + i}
-                        </option>
-                      ))}
-                    </select>
-                    <BiCalendar className="ml-2 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Security code*
-                  </label>
-                  <input
-                    type="text"
-                    className="input input-bordered w-full"
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Billing ZIP code*
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Important Information Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Important information
-            </h2>
-
-            <ul className="space-y-3 text-sm text-gray-700 mb-4">
-              <li className="list-disc ml-4">
-                Front desk staff will greet guests on arrival at the property.
-                For any questions, please contact the property using the
-                information on the booking confirmation.
-              </li>
-              <li className="list-disc ml-4">
-                The name on the reservation must match the name on the guest's
-                photo identification provided at check-in.
-              </li>
-              <li className="list-disc ml-4">
-                You'll be asked to pay the following charges at the property.
-                Fees may include applicable taxes:
-              </li>
-            </ul>
-
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <p className="font-medium mb-2">Deposit: USD 100.00</p>
-              <p className="font-medium">
-                Resort fee: USD 40.67 per accommodation, per night
-              </p>
-              <p className="text-sm mt-2">The resort fee includes:</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-2 text-sm">
-                {[
-                  "Business center/computer access",
-                  "Concierge service",
-                  "Faxes",
-                  "Fitness center access",
-                  "Housekeeping",
-                  "In-room safe",
-                  "Parking",
-                  "Phone calls",
-                  "Pool access",
-                  "Self parking",
-                  "Hot tub access",
-                  "Valet parking",
-                ].map((item) => (
-                  <div key={item} className="flex items-start">
-                    <FaCheck className="text-green-500 mt-1 mr-2 text-xs" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="divider my-3" />
-
-            <div className="flex justify-between mb-6">
-              <div>
-                <p className="text-sm text-gray-500">Check-in</p>
-                <p className="font-medium">3:00 PM - 11:00 PM</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Check-out</p>
-                <p className="font-medium">11:00 AM</p>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 p-4 rounded-lg mb-6">
-              <p className="text-sm text-gray-700">
-                By clicking on the button below, I acknowledge that I have
-                reviewed the
-                <Link to="#" className="text-blue-600 hover:underline">
-                  {" "}
-                  Privacy Statement
-                </Link>
-                ,
-                <Link to="#" className="text-blue-600 hover:underline">
-                  {" "}
-                  Government Travel Advice
-                </Link>
-                , and have reviewed and accept the
-                <Link to="#" className="text-blue-600 hover:underline">
-                  {" "}
-                  Rules & Restrictions
-                </Link>{" "}
-                and
-                <Link to="#" className="text-blue-600 hover:underline">
-                  {" "}
-                  Terms of Use
-                </Link>
-                .
-              </p>
-            </div>
-
-            {/* <button className="btn btn-primary w-full">
-              Complete Booking
-              <FaChevronRight className="ml-2" />
-            </button> */}
-
-            <div className="flex items-start mt-4">
-              <FaLock className="text-gray-500 mt-1 mr-2" />
-              <p className="text-xs text-gray-500">
-                We use secure transmission and encrypted storage to protect your
-                personal information. Payments are processed in the U.S. except
-                where the travel provider (hotel / airline etc) processes your
-                payment outside the U.S., in which case your card issuer may
-                charge a foreign transaction fee.
-              </p>
-            </div>
-          </div>
+          {/* Important Info */}
+          <ImportantInfo />
         </div>
 
-        {/* Right Column - Summary */}
+        {/* Right Sidebar Summary */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 sticky top-4">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
@@ -601,9 +266,19 @@ const Checkout = () => {
                 <span>Total:</span>
                 <span>${totalAmount.toFixed(2)}</span>
               </div>
-              <button className="btn btn-primary w-full">
-                Complete Booking
-                <FaChevronRight className="ml-2" />
+              <button
+                type="submit"
+                className="btn btn-primary w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  <>
+                    Complete Booking
+                    <FaChevronRight className="ml-2" />
+                  </>
+                )}
               </button>
               <div className="flex items-start mt-4">
                 <FaShieldAlt className="text-gray-500 mt-1 mr-2" />
@@ -616,7 +291,7 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
