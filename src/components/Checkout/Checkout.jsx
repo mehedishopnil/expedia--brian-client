@@ -89,7 +89,8 @@ const Checkout = () => {
         roomId: paymentData.room._id,     // Assuming your server expects roomId
         startDate: new Date().toISOString(),
         endDate: new Date(Date.now() + 86400000).toISOString(),
-        resort, // +1 day
+        resort,
+        room, // +1 day
         guestInfo: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -104,7 +105,7 @@ const Checkout = () => {
           securityCode: formData.securityCode,
           zipCode: formData.zipCode,
         },
-        totalAmount: paymentData.paymentDetails.totalAmount,
+        paymentDetails,
         status: "confirmed"
       };
 
