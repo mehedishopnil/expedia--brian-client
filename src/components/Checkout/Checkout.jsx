@@ -566,10 +566,10 @@ const Checkout = () => {
               </p>
             </div>
 
-            <button className="btn btn-primary w-full">
+            {/* <button className="btn btn-primary w-full">
               Complete Booking
               <FaChevronRight className="ml-2" />
-            </button>
+            </button> */}
 
             <div className="flex items-start mt-4">
               <FaLock className="text-gray-500 mt-1 mr-2" />

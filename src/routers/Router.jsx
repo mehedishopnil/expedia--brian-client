@@ -9,53 +9,59 @@ import HotelSearch from "../components/HotelSearch/HotelSearch";
 import Payment from "../components/Payment/Payment";
 import Checkout from "../components/Checkout/Checkout";
 import Account from "../pages/Account/Account";
-
-
+import UserDashboard from "../layout/UserDashboard/UserDashboard";
+import Profile from "../pages/Profile/Profile";
+import Communications from "../pages/Communications/Communications";
 
 export const router = createBrowserRouter([
-     {
-          path: "/",
-          element: <Main />,
-          children: [
-               {
-                    path: "/",
-                    element: <Home />
-               },
-               {
-                    path: "signin",
-                    element: <SignIn />
-               },
-               {
-                    path: "signup",
-                    element: <Registration />
-               },
-               {
-                    path: "hotels",
-                    element: <Hotels />
-               },
-               {
-                    path: "singleResortPage/:_id",
-                    element: <SingleResortPage />
-               },
-               {
-                    path: "hotel-search",
-                    element: <HotelSearch/>
-
-               }, 
-               {
-                    path: "payment",
-                    element: <Payment />
-               },
-               {
-                    path: "checkout",
-                    element: <Checkout />
-               },
-               {
-                    path: "account",
-                    element: <Account />
-               }
-          ]
-     },
-
-     
-])
+  {
+    path: "/",
+    element: <Main />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "signup",
+        element: <Registration />,
+      },
+      {
+        path: "hotels",
+        element: <Hotels />,
+      },
+      {
+        path: "singleResortPage/:_id",
+        element: <SingleResortPage />,
+      },
+      {
+        path: "hotel-search",
+        element: <HotelSearch />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "/account",
+        element: <Account />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "communications",
+        element: <Communications />,
+      },
+    ],
+  },
+]);
