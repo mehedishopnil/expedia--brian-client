@@ -29,7 +29,7 @@ const RoomCard = ({ resort }) => {
   const { user } = useContext(AuthContext);
 
   // Price details
-  const basePrice = 139;
+  const basePrice = 79;
   const breakfastPrice = 40;
   const totalPrice = selectedExtra === "Breakfast" ? basePrice + breakfastPrice : basePrice;
 
