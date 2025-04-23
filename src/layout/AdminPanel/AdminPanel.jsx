@@ -45,7 +45,7 @@ const AdminPanel = () => {
         {/* AdminPanel header Section */}
         <div className="flex items-center justify-between ">
           <Link to="/" className="z-20">
-            <img src={logo} alt="Logo" className="w-10 h-10" />
+            <img src={logo} alt="Logo" className="w-20 h-10" />
           </Link>
           <h1 className="text-xl font-bold">AdminPanel</h1>
           <button onClick={toggleMobileMenu} className=" text-xl">
