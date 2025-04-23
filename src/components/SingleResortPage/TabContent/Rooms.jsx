@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomCard from "../../RoomCard/RoomCard";
 
-const Rooms = ({resort}) => {
+const Rooms = ({ resort }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [travelers, setTravelers] = useState({ rooms: 1, travelers: 2 });
@@ -12,6 +12,21 @@ const Rooms = ({resort}) => {
 
   const togglePricingInfo = () => {
     setShowPricingInfo(!showPricingInfo);
+  };
+
+  // Format dates for display and API
+  const formatDateForDisplay = (date) => {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // Calculate number of nights
+  const calculateNights = () => {
+    const diffTime = Math.abs(endDate - startDate);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   return (
@@ -31,6 +46,7 @@ const Rooms = ({resort}) => {
             <DatePicker
               selected={startDate}
               onChange={(date) => setStartDate(date)}
+              minDate={new Date()}
               className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
             />
           </div>
@@ -46,6 +62,7 @@ const Rooms = ({resort}) => {
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
+              minDate={startDate}
               className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
             />
           </div>
@@ -97,14 +114,27 @@ const Rooms = ({resort}) => {
                 <span className="text-sm text-gray-700">$173</span>
                 <span className="text-sm text-gray-700">$260</span>
               </div>
-              
             </div>
           </div>
         )}
       </div>
 
+      {/* Display selected dates information */}
+      <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+        <p className="text-sm text-gray-700">
+          Showing availability for: <span className="font-medium">{formatDateForDisplay(startDate)}</span> to <span className="font-medium">{formatDateForDisplay(endDate)}</span> ({calculateNights()} nights)
+        </p>
+      </div>
+
+      {/* Room Cards with date information */}
       <div>
-          <RoomCard resort={resort}/>
+        <RoomCard 
+          resort={resort}
+          startDate={startDate}
+          endDate={endDate}
+          nights={calculateNights()}
+          travelers={travelers}
+        />
       </div>
     </div>
   );

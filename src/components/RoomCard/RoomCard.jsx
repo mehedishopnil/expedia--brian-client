@@ -2,44 +2,50 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
-const RoomCard = ({ resort }) => {
-  const { _id, img2, img3 } = resort;
+const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
+  const { _id, img2, img3, room_details } = resort;
   const {
     sleeps_room,
-    privacy_room_amount,
     bath,
     kitchen,
-    room_Description,
-    studio_sleeps_room,
-    studio_privacy_room_amount,
-    studio_kitchen,
-    studio_bath,
-    hotel_room,
-    hotel_privacy_room_amount,
-    hotel_kitchen,
-    hotel_bath,
-  } = resort.room_details;
-
-  // Fixed rating and complement
-  const rating = 9.0;
-  const ratingComplement = "Wonderful";
+  } = room_details;
 
   // State for selected extra
   const [selectedExtra, setSelectedExtra] = useState("no-extras");
   const { user } = useContext(AuthContext);
 
-  // Price details
-  const basePrice = 79;
-  const breakfastPrice = 40;
-  const totalPrice = selectedExtra === "Breakfast" ? basePrice + breakfastPrice : basePrice;
+  // Pricing
+  const basePricePerNight = 79;
+  const breakfastPricePerNight = 15;
+  
+  const basePrice = basePricePerNight * nights;
+  const breakfastPrice = selectedExtra === "Breakfast" ? breakfastPricePerNight * nights : 0;
+  const totalPrice = basePrice + breakfastPrice;
 
-  // Navigation hook
+  // Format dates for display
+  const formatDate = (date) => {
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  // Calculate cancellation date (7 days before start date)
+  const cancellationDate = startDate ? new Date(startDate.getTime() - 7 * 24 * 60 * 60 * 1000) : null;
+
   const navigate = useNavigate();
 
   const handleReserveClick = () => {
-    // Prepare reservation data
     const reservationData = {
       resort,
+      dates: {
+        start: startDate,
+        end: endDate,
+        nights: nights
+      },
+      guests: travelers,
       room: {
         type: "King Room",
         sleeps: sleeps_room,
@@ -53,16 +59,13 @@ const RoomCard = ({ resort }) => {
       },
       pricing: {
         basePrice: basePrice,
-        extras: selectedExtra === "Breakfast" ? breakfastPrice : 0,
+        extras: breakfastPrice,
         totalPrice: totalPrice
       },
       selectedExtra: selectedExtra
     };
 
-    console.log(reservationData);
-
     if (!user) {
-      // Redirect to login page with the reservation data and return path
       navigate('/signin', { 
         state: { 
           from: `/singleResortPage/${_id}`, 
@@ -71,14 +74,13 @@ const RoomCard = ({ resort }) => {
         } 
       });
     } else {
-      // User is logged in, proceed to payment
       navigate('/payment', { state: { reservationData } });
     }
   };
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden mb-6 hover:shadow-xl transition-shadow duration-300">
-      {/* Image at the Top */}
+      {/* Image */}
       <img
         src={img2 || img3}
         alt="Room"
@@ -86,14 +88,26 @@ const RoomCard = ({ resort }) => {
       />
 
       {/* Card Content */}
-      <div className="p-2">
+      <div className="p-4">
+        {/* Selected Dates */}
+        {startDate && endDate && (
+          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+            <p className="text-sm font-medium text-gray-800">
+              {formatDate(startDate)} - {formatDate(endDate)} ({nights} {nights === 1 ? 'night' : 'nights'})
+            </p>
+            <p className="text-xs text-gray-600 mt-1">
+              {travelers.travelers} {travelers.travelers === 1 ? 'traveler' : 'travelers'} • {travelers.rooms} {travelers.rooms === 1 ? 'room' : 'rooms'}
+            </p>
+          </div>
+        )}
+
         {/* Title and Rating */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">King Room</h2>
           <div className="flex items-center">
-            <span className="text-sm text-gray-600 mr-2">Guest rating:</span>
+            <span className="text-sm text-gray-600 mr-2">Rating:</span>
             <span className="text-sm font-semibold text-blue-600">
-              {rating} {ratingComplement}
+              9.0 Wonderful
             </span>
           </div>
         </div>
@@ -110,11 +124,11 @@ const RoomCard = ({ resort }) => {
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">📎</span>
-            <span>2 King Bed</span>
+            <span>1 King Bed</span>
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">✓</span>
-            <span>Reserve now, pay later</span>
+            <span>Free cancellation</span>
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">☞</span>
@@ -125,20 +139,15 @@ const RoomCard = ({ resort }) => {
         {/* Refund Policy */}
         <div className="mt-4">
           <p className="text-sm text-green-600 font-medium">Fully refundable</p>
-          <p className="text-sm text-gray-600">Before Fri, Mar 28</p>
-        </div>
-
-        {/* More Details Link */}
-        <div className="mt-6">
-          <a href="#" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-all duration-300">
-            More details &gt;
-          </a>
+          {cancellationDate && (
+            <p className="text-sm text-gray-600">Before {formatDate(cancellationDate)}</p>
+          )}
         </div>
 
         <div className='divider w-full'></div>
 
         {/* Extras Section */}
-        <div className="mt-6">
+        <div className="mt-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3">Extras</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm text-gray-700">
@@ -165,29 +174,45 @@ const RoomCard = ({ resort }) => {
                   onChange={() => setSelectedExtra("Breakfast")}
                   className="mr-2"
                 />
-                <span>Breakfast</span>
+                <span>Breakfast (daily)</span>
               </label>
-              <span className="text-green-600">+$40</span>
+              <span className="text-green-600">+${breakfastPricePerNight}/night</span>
             </div>
           </div>
         </div>
 
-        {/* Price Details */}
-        <div className="mt-6 text-end">
-          <p className="text-2xl font-semibold text-gray-800">${basePrice}</p>
-          <p className="text-sm text-gray-600">${totalPrice} total (includes taxes & fees)</p>
+        {/* Price Breakdown */}
+        <div className="mt-6 border-t border-gray-200 pt-4">
+          <div className="flex justify-between text-sm text-gray-700 mb-2">
+            <span>${basePricePerNight} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
+            <span>${basePrice}</span>
+          </div>
+          {selectedExtra === "Breakfast" && (
+            <div className="flex justify-between text-sm text-gray-700 mb-2">
+              <span>Breakfast × {nights} {nights === 1 ? 'day' : 'days'}</span>
+              <span>${breakfastPrice}</span>
+            </div>
+          )}
+          <div className="flex justify-between font-semibold text-gray-800 mt-3 pt-3 border-t border-gray-200">
+            <span>Total</span>
+            <span>${totalPrice}</span>
+          </div>
         </div>
 
         {/* Reserve Button */}
         <button 
           onClick={handleReserveClick}
-          className="w-full bg-[#1668e3] text-white font-semibold py-1 px-6 rounded-full hover:bg-blue-600 transition-all duration-300 mt-6"
+          className="w-full bg-[#1668e3] text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 mt-6"
         >
-          Reserve
+          Reserve Now
         </button>
 
         {/* Note */}
-        <p className="text-sm text-gray-600 mt-3 text-center">You will not be charged yet.</p>
+        {cancellationDate && (
+          <p className="text-xs text-gray-500 mt-3 text-center">
+            You won't be charged yet. Free cancellation until {formatDate(cancellationDate)}.
+          </p>
+        )}
       </div>
     </div>
   );
