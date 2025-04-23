@@ -15,6 +15,11 @@ import Communications from "../pages/Communications/Communications";
 import ConfirmBooking from "../components/ConfirmBooking/ConfirmBooking";
 import UserOverview from "../pages/UserOverview/UserOverview";
 import MyBookings from "../pages/MyBookings/MyBookings";
+import AdminPanel from "../layout/AdminPanel/AdminPanel";
+import AdminOverview from "../pages/AdminOverview/AdminOverview";
+import UsersBookings from "../pages/UsersBookings/UsersBookings";
+import UserControl from "../pages/UserControl/UserControl";
+import AdminControl from "../pages/AdminControl/AdminControl";
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +89,29 @@ export const router = createBrowserRouter([
       {
         path: "my-bookings",
         element: <MyBookings />,
+      }
+    ]
+  },
+  
+  {
+    path: "/admin-panel",
+    element: <AdminPanel />,
+    children: [
+      {
+        path: "admin-overview",
+        element:<AdminOverview />,
+      },
+      {
+        path: "users-bookings",
+        element: <UsersBookings />,
+      },
+      {
+        path: "user-control",
+        element: <UserControl />,
+      },
+      {
+        path: "admin-control",
+        element: <AdminControl />,
       }
     ]
   }

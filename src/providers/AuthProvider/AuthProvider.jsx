@@ -483,24 +483,191 @@ const AuthProvider = ({ children }) => {
 
   //Fetch Booking Data
   const fetchBookings = async () => {
+    if (!user?.email) return;
+    
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_Link}/bookings?email=${user.email}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+      const response = await fetch(
+        `${import.meta.env.VITE_API_Link}/bookings?email=${user.email}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         }
-      });
+      );
   
       if (!response.ok) {
         throw new Error('Failed to fetch bookings');
       }
   
       const data = await response.json();
-      setBookingsData(data.data); // Store the fetched data in state
+      setBookingsData(data.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
-      // Handle error as needed
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to load bookings',
+        icon: 'error'
+      });
     }
   };
+
+  // ================= BOOKING FUNCTIONS ================= //
+
+/**
+ * Create a new booking
+ * @param {Object} bookingData - The booking details
+ * @returns {Promise<Object>} The created booking data
+ */
+const createBooking = async (bookingData) => {
+  setLoading(true);
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_Link}/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(bookingData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to create booking');
+    }
+
+    const data = await response.json();
+    
+    // Update local bookings state
+    setBookingsData(prev => [data.data, ...prev]);
+    
+    Swal.fire({
+      title: 'Booking Confirmed!',
+      text: `Your booking ID: ${data.bookingId}`,
+      icon: 'success'
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Booking error:', error);
+    Swal.fire({
+      title: 'Booking Failed',
+      text: error.message,
+      icon: 'error'
+    });
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};
+
+/**
+ * Fetch user's bookings
+ * @returns {Promise<void>}
+ */
+
+
+/**
+ * Cancel a booking
+ * @param {string} bookingId - The ID of the booking to cancel
+ * @param {string} reason - Reason for cancellation
+ * @returns {Promise<Object>} Cancellation result
+ */
+const cancelBooking = async (bookingId, reason) => {
+  setLoading(true);
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_Link}/bookings/${bookingId}/cancel`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ cancellationReason: reason })
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to cancel booking');
+    }
+
+    const data = await response.json();
+    
+    // Update local bookings state
+    setBookingsData(prev => 
+      prev.map(booking => 
+        booking._id === bookingId 
+          ? { ...booking, status: 'cancelled', cancellation: data.cancellation }
+          : booking
+      )
+    );
+
+    Swal.fire({
+      title: 'Booking Cancelled',
+      text: data.refundEligible 
+        ? 'Your refund will be processed within 5-7 business days' 
+        : 'This booking is not eligible for refund',
+      icon: data.refundEligible ? 'success' : 'info'
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Cancel booking error:', error);
+    Swal.fire({
+      title: 'Cancellation Failed',
+      text: error.message,
+      icon: 'error'
+    });
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};
+
+/**
+ * Fetch all bookings (admin only)
+ * @returns {Promise<void>}
+ */
+const fetchAllBookings = async () => {
+  if (role !== 'admin') return;
+  
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_Link}/admin/bookings`,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch all bookings');
+    }
+
+    const data = await response.json();
+    setBookingsData(data.data);
+  } catch (error) {
+    console.error('Error fetching all bookings:', error);
+    Swal.fire({
+      title: 'Error',
+      text: 'Failed to load bookings',
+      icon: 'error'
+    });
+  }
+};
+
+// Update the useEffect for bookings to handle admin vs user
+useEffect(() => {
+  if (user?.email) {
+    if (role === 'admin') {
+      fetchAllBookings();
+    } else {
+      fetchBookings();
+    }
+  }
+}, [user?.email, role]);
   
   // Call this function when component mounts or when user.email changes
   useEffect(() => {
@@ -539,14 +706,23 @@ useEffect(() => {
     allResortData,
     allUsersData,
     bookingsData,
+    role,
+    createBooking,
+    cancelBooking,
+    fetchAllBookings,
+    
     fetchResortData,
     createUser,
     login,
     googleLogin,
     signOut,
     fetchUserData,
-    role,
+    
     setUserRole,
+    
+  fetchBookings,
+  
+  
   };
 
   // Provide the context value to the app
