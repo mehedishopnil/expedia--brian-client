@@ -3,12 +3,14 @@ import { FaCalendarAlt, FaUser, FaChevronDown, FaChevronUp } from "react-icons/f
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import RoomCard from "../../RoomCard/RoomCard";
+import SuiteCard from "../../SuiteCard/SuiteCard";
 
 const Rooms = ({ resort }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [travelers, setTravelers] = useState({ rooms: 1, travelers: 2 });
   const [showPricingInfo, setShowPricingInfo] = useState(false);
+  const [selectedRoomType, setSelectedRoomType] = useState("1bed"); // Default to 1 bed
 
   const togglePricingInfo = () => {
     setShowPricingInfo(!showPricingInfo);
@@ -126,15 +128,62 @@ const Rooms = ({ resort }) => {
         </p>
       </div>
 
+      {/* Room Type Filter Buttons */}
+      <div className="flex gap-4 mb-6">
+        <button
+          className={`px-4 py-2 rounded-lg border ${selectedRoomType === "1bed" ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300"}`}
+          onClick={() => setSelectedRoomType("1bed")}
+        >
+          1 Bed
+        </button>
+        <button
+          className={`px-4 py-2 rounded-lg border ${selectedRoomType === "suite" ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300"}`}
+          onClick={() => setSelectedRoomType("suite")}
+        >
+          Suite
+        </button>
+      </div>
+
       {/* Room Cards with date information */}
       <div>
-        <RoomCard 
-          resort={resort}
-          startDate={startDate}
-          endDate={endDate}
-          nights={calculateNights()}
-          travelers={travelers}
-        />
+        {selectedRoomType === "1bed" ? (
+          <RoomCard 
+            resort={resort}
+            startDate={startDate}
+            endDate={endDate}
+            nights={calculateNights()}
+            travelers={travelers}
+          />
+        ) : (
+          <div className="grid gap-6">
+            <SuiteCard 
+              resort={resort}
+              startDate={startDate}
+              endDate={endDate}
+              travelers={travelers}
+              nights={calculateNights()}
+              title="Deluxe Suite"
+              amount={59}
+              imageUrl={resort?.suiteImages?.deluxe || "https://via.placeholder.com/300x200?text=Deluxe+Suite"}
+              description="Luxurious suite with premium amenities and stunning views"
+              sleeps={2}
+              size="350 sq ft"
+            />
+            <SuiteCard 
+              resort={resort}
+              startDate={startDate}
+              endDate={endDate}
+              travelers={travelers}
+              nights={calculateNights()}
+              title="Family Deluxe Suite"
+              amount={79}
+              imageUrl={resort?.suiteImages?.family || "https://via.placeholder.com/300x200?text=Family+Suite"}
+              description="Spacious suite perfect for families with extra sleeping areas"
+              sleeps={4}
+              size="500 sq ft"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
