@@ -103,7 +103,7 @@ const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
 
         {/* Title and Rating */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">King Room</h2>
+          <h2 className="text-xl font-semibold text-gray-800">1 Bedroom</h2>
           <div className="flex items-center">
             <span className="text-sm text-gray-600 mr-2">Rating:</span>
             <span className="text-sm font-semibold text-blue-600">
@@ -124,7 +124,7 @@ const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">📎</span>
-            <span>1 King Bed</span>
+            <span>1 Bed</span>
           </div>
           <div className="flex items-center text-sm text-gray-700">
             <span className="mr-2">✓</span>
@@ -147,7 +147,7 @@ const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
         <div className='divider w-full'></div>
 
         {/* Extras Section */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3">Extras</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm text-gray-700">
@@ -179,7 +179,7 @@ const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
               <span className="text-green-600">+${breakfastPricePerNight}/night</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Price Breakdown */}
         <div className="mt-6 border-t border-gray-200 pt-4">
@@ -187,12 +187,12 @@ const RoomCard = ({ resort, startDate, endDate, nights, travelers }) => {
             <span>${basePricePerNight} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
             <span>${basePrice}</span>
           </div>
-          {selectedExtra === "Breakfast" && (
+          {/* {selectedExtra === "Breakfast" && (
             <div className="flex justify-between text-sm text-gray-700 mb-2">
               <span>Breakfast × {nights} {nights === 1 ? 'day' : 'days'}</span>
               <span>${breakfastPrice}</span>
             </div>
-          )}
+          )} */}
           <div className="flex justify-between font-semibold text-gray-800 mt-3 pt-3 border-t border-gray-200">
             <span>Total</span>
             <span>${totalPrice}</span>
