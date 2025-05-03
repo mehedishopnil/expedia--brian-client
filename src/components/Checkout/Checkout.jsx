@@ -38,12 +38,32 @@ const Checkout = () => {
   
   const {user} = useContext(AuthContext);
 
-  console.log(paymentData);
+  if (!paymentData) {
+    return (
+      <div className="max-w-4xl mx-auto p-4 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          No payment information found
+        </h1>
+        <p className="text-gray-600 mb-6">
+          Please complete your reservation process from the payment page
+        </p>
+        <Link
+          to="/"
+          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors inline-flex items-center"
+        >
+          <IoMdArrowRoundBack className="mr-2" />
+          Return to Home
+        </Link>
+      </div>
+    );
+  }
 
-  const { paymentDetails, pricing, resort, room } = paymentData;
-  const { baseAmount, fees, refundableDate, tax, totalAmount } = paymentDetails;
+  const { resort, room, paymentDetails } = paymentData;
   const { room_details } = resort;
-  const { privacy_room_amount } = room_details;
+  const privacy_room_amount = parseFloat(room_details?.privacy_room_amount) || 0;
+  const baseAmount = parseFloat(paymentDetails?.baseAmount) || privacy_room_amount;
+  const totalAmount = parseFloat(paymentDetails?.totalAmount) || baseAmount;
+  const refundableDate = paymentDetails?.refundableDate || "the check-in date";
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -54,7 +74,6 @@ const Checkout = () => {
   };
 
   const validateForm = () => {
-    // Basic validation - extend as needed
     if (!formData.firstName || !formData.lastName) {
       Swal.fire("Error", "Please enter your full name", "error");
       return false;
@@ -86,15 +105,14 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      // Prepare booking data according to server expectations
       const bookingData = {
-        resortId: paymentData.resort._id, // Assuming your server expects resortId
-        email: user.email, // Use the email from AuthContext
-        roomId: paymentData.room._id,     // Assuming your server expects roomId
+        resortId: resort._id,
+        email: user.email,
+        roomId: room._id,
         startDate: new Date().toISOString(),
         endDate: new Date(Date.now() + 86400000).toISOString(),
         resort,
-        room, // +1 day
+        room,
         guestInfo: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -104,12 +122,15 @@ const Checkout = () => {
         },
         paymentInfo: {
           cardName: formData.cardName,
-          cardNumber: formData.cardNumber.replace(/\s/g, ''), // Remove spaces
+          cardNumber: formData.cardNumber.replace(/\s/g, ''),
           expiry: `${formData.expiryMonth}/${formData.expiryYear}`,
           securityCode: formData.securityCode,
           zipCode: formData.zipCode,
         },
-        paymentDetails,
+        paymentDetails: {
+          baseAmount: baseAmount,
+          totalAmount: totalAmount
+        },
         status: "confirmed"
       };
 
@@ -117,7 +138,7 @@ const Checkout = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('token')}` // Add if your API requires auth
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(bookingData),
       });
@@ -137,7 +158,7 @@ const Checkout = () => {
 
       navigate("/confirm-booking", {
         state: {
-          bookingData: responseData.data, // Use the data returned from server
+          bookingData: responseData.data,
           bookingId: responseData.bookingId
         },
         replace: true
@@ -155,28 +176,6 @@ const Checkout = () => {
     }
   };
 
-  if (!paymentData) {
-    return (
-      <div className="max-w-4xl mx-auto p-4 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">
-          No payment information found
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Please complete your reservation process from the payment page
-        </p>
-        <Link
-          to="/"
-          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors inline-flex items-center"
-        >
-          <IoMdArrowRoundBack className="mr-2" />
-          Return to Home
-        </Link>
-      </div>
-    );
-  }
-
-  
-
   return (
     <form onSubmit={handleSubmit} className="max-w-6xl mx-auto p-4 md:p-6">
       <div className="flex items-center justify-between mb-8">
@@ -192,7 +191,6 @@ const Checkout = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          {/* Resort Card with data */}
           <ResortCardInfo resort={resort} room={room} />
 
           <div className="flex items-start mt-4 bg-blue-50 p-3 border rounded-lg">
@@ -202,7 +200,6 @@ const Checkout = () => {
             </p>
           </div>
 
-          {/* Price Details */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               Price Details
@@ -210,16 +207,8 @@ const Checkout = () => {
 
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span>${privacy_room_amount} Room</span>
-                <span>${baseAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Taxes</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Fees</span>
-                <span>${fees.toFixed(2)}</span>
+                <span>Room Rate</span>
+                <span>${baseAmount?.toFixed?.(2) || '0.00'}</span>
               </div>
             </div>
 
@@ -227,7 +216,7 @@ const Checkout = () => {
 
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>${totalAmount.toFixed(2)}</span>
+              <span>${totalAmount?.toFixed?.(2) || '0.00'}</span>
             </div>
 
             <Link
@@ -238,23 +227,15 @@ const Checkout = () => {
             </Link>
 
             <p className="text-gray-500 text-xs mt-3">
-              Rates are quoted in US dollars. Taxes and Fees due at the property
-              are based on current exchange rates, and are payable in local
-              currency.
+              All prices shown are final with no additional fees or taxes.
             </p>
           </div>
 
-          {/* Guest Info */}
           <GuestInfoCard formData={formData} handleChange={handleChange} />
-
-          {/* Payment Method */}
           <PaymentMethod formData={formData} handleChange={handleChange} />
-
-          {/* Important Info */}
           <ImportantInfo />
         </div>
 
-        {/* Right Sidebar Summary */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 sticky top-4">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
@@ -269,7 +250,7 @@ const Checkout = () => {
             <div className="border-t border-gray-200 pt-4">
               <div className="flex justify-between font-bold text-lg mb-4">
                 <span>Total:</span>
-                <span>${totalAmount.toFixed(2)}</span>
+                <span>${totalAmount?.toFixed?.(2) || '0.00'}</span>
               </div>
               <button
                 type="submit"

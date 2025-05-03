@@ -32,8 +32,6 @@ const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [bookingsData, setBookingsData] = useState([]);
 
-  console.log(bookingsData);
-
 
 
   // Function to create user and send data to backend
