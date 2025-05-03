@@ -115,13 +115,13 @@ const ConfirmBooking = () => {
             <h3 className="text-xl font-bold text-gray-800 mb-4">Price details</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span>Room rate (1 night)</span>
-                <span>${(totalAmount * 0.8).toFixed(2)}</span>
+                <span>Room rate</span>
+                <span>${totalAmount .toFixed(2)}</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Taxes & fees</span>
                 <span>${(totalAmount * 0.2).toFixed(2)}</span>
-              </div>
+              </div> */}
               <div className="border-t border-gray-200 my-3"></div>
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
