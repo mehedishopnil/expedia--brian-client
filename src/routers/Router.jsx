@@ -20,6 +20,7 @@ import AdminOverview from "../pages/AdminOverview/AdminOverview";
 import UsersBookings from "../pages/UsersBookings/UsersBookings";
 import UserControl from "../pages/UserControl/UserControl";
 import AdminControl from "../pages/AdminControl/AdminControl";
+import NotFound from "../components/NotFound/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       {
           path: "confirm-booking",
           element: <ConfirmBooking />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       }
       
     ],
