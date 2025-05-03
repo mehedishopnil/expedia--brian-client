@@ -9,9 +9,9 @@ const Payment = () => {
   const basePrice = reservationData?.pricing?.totalPrice || 0;
   
   // Calculate taxes and fees
-  const tax = basePrice * 0.20; // 20% tax
-  const fees = basePrice * 0.30; // 30% fees
-  const totalAmount = basePrice + tax + fees;
+  // const tax = basePrice * 0.20; // 20% tax
+  // const fees = basePrice * 0.30; // 30% fees
+  // const totalAmount = basePrice + tax + fees;
   const depositAmount = 221; // Fixed deposit amount
   const depositTax = depositAmount * 0.20;
   const depositFees = depositAmount * 0.30;
@@ -37,9 +37,9 @@ const Payment = () => {
       paymentDetails: {
         type: paymentType,
         baseAmount: paymentType === 'full' ? basePrice : depositAmount,
-        tax: paymentType === 'full' ? tax : depositTax,
-        fees: paymentType === 'full' ? fees : depositFees,
-        totalAmount: paymentType === 'full' ? totalAmount : depositTotal,
+        // tax: paymentType === 'full' ? tax : depositTax,
+        // fees: paymentType === 'full' ? fees : depositFees,
+        // totalAmount: paymentType === 'full' ? totalAmount : depositTotal,
         isDeposit: paymentType === 'deposit',
         refundableDate,
       }
@@ -84,8 +84,8 @@ const Payment = () => {
               </ul>
               <div className="text-right">
                 <p className="text-2xl font-semibold">${basePrice.toFixed(2)}</p>
-                <p className="text-sm">total ${totalAmount.toFixed(2)}</p>
-                <p className="text-sm text-gray-600">includes taxes & fees</p>
+                {/* <p className="text-sm">total ${totalAmount.toFixed(2)}</p>
+                <p className="text-sm text-gray-600">includes taxes & fees</p> */}
               </div>
               <button 
                 onClick={() => handlePaymentClick('full')}
@@ -117,8 +117,8 @@ const Payment = () => {
 
               <div className="text-right">
                 <p className="text-2xl font-semibold">${depositAmount.toFixed(2)}</p>
-                <p className="text-sm">total ${depositTotal.toFixed(2)}</p>
-                <p className="text-sm text-gray-600">includes taxes & fees</p>
+                {/* <p className="text-sm">total ${depositTotal.toFixed(2)}</p>
+                <p className="text-sm text-gray-600">includes taxes & fees</p> */}
               </div>
 
               <button 

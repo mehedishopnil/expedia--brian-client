@@ -169,6 +169,8 @@ const Rooms = ({ resort }) => {
               sleeps={2}
               size="350 sq ft"
             />
+
+            
             <SuiteCard 
               resort={resort}
               startDate={startDate}
