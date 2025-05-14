@@ -7,7 +7,7 @@ const HotelSearch = () => {
   const { allResortData } = useContext(AuthContext);
   const [filteredResorts, setFilteredResorts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage] = useState(15); // Results per page
+  const [resultsPerPage] = useState(15);
   const location = useLocation();
 
   // Extract search query from URL
@@ -21,19 +21,58 @@ const HotelSearch = () => {
         return;
       }
 
-      // Split keyword into individual words
+      // Split keyword into individual words and remove empty terms
       const searchTerms = keyword.toLowerCase().split(' ').filter(term => term.trim() !== '');
 
-      // Filter resorts based on search terms
-      const results = allResortData.filter(resort => {
+      // Score resorts based on search term matches
+      const scoredResorts = allResortData.map(resort => {
         const resortName = resort.place_name?.toLowerCase() || '';
         const resortLocation = resort.location?.toLowerCase() || '';
+        const resortDescription = resort.description?.toLowerCase() || '';
         
-        return searchTerms.some(term => 
+        let score = 0;
+        
+        // Exact matches get highest priority
+        if (resortName === keyword.toLowerCase()) {
+          score += 100;
+        }
+        
+        // Count matches in different fields with different weights
+        searchTerms.forEach(term => {
+          // Name matches are most important
+          if (resortName.includes(term)) {
+            score += 30;
+            // Bonus if the match is at the beginning of the name
+            if (resortName.startsWith(term)) score += 20;
+          }
+          
+          // Location matches are also important
+          if (resortLocation.includes(term)) {
+            score += 20;
+          }
+          
+          // Description matches are less important
+          if (resortDescription.includes(term)) {
+            score += 10;
+          }
+        });
+        
+        // Bonus for having all search terms matched
+        if (searchTerms.every(term => 
           resortName.includes(term) || 
-          resortLocation.includes(term)
-        );
+          resortLocation.includes(term) ||
+          resortDescription.includes(term)
+        )) {
+          score += 50;
+        }
+        
+        return { ...resort, score };
       });
+
+      // Filter out resorts with zero score and sort by score (descending)
+      const results = scoredResorts
+        .filter(resort => resort.score > 0)
+        .sort((a, b) => b.score - a.score);
 
       setFilteredResorts(results);
     };
@@ -52,31 +91,26 @@ const HotelSearch = () => {
   // Generate Visible Page Numbers
   const getVisiblePageNumbers = () => {
     const visiblePages = [];
-    const maxVisiblePages = 5; // Show up to 5 page numbers at a time
+    const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
-      // Show all pages if total pages are less than or equal to 5
       for (let i = 1; i <= totalPages; i++) {
         visiblePages.push(i);
       }
     } else {
-      // Show dynamic page numbers with ellipsis
       if (currentPage <= 3) {
-        // Show first 5 pages
         for (let i = 1; i <= maxVisiblePages; i++) {
           visiblePages.push(i);
         }
         visiblePages.push('...');
         visiblePages.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
-        // Show last 5 pages
         visiblePages.push(1);
         visiblePages.push('...');
         for (let i = totalPages - 4; i <= totalPages; i++) {
           visiblePages.push(i);
         }
       } else {
-        // Show middle pages with ellipsis on both sides
         visiblePages.push(1);
         visiblePages.push('...');
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
@@ -92,7 +126,7 @@ const HotelSearch = () => {
 
   // Change Page
   const paginate = (pageNumber) => {
-    if (pageNumber === '...') return; // Ignore ellipsis clicks
+    if (pageNumber === '...') return;
     setCurrentPage(pageNumber);
   };
 
@@ -128,7 +162,6 @@ const HotelSearch = () => {
       {filteredResorts.length > resultsPerPage && (
         <div className="flex justify-center mt-8">
           <nav className="flex gap-2 flex-wrap justify-center">
-            {/* Previous Button */}
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
@@ -141,7 +174,6 @@ const HotelSearch = () => {
               Previous
             </button>
 
-            {/* Page Numbers */}
             {getVisiblePageNumbers().map((number, index) => (
               <button
                 key={index}
@@ -159,7 +191,6 @@ const HotelSearch = () => {
               </button>
             ))}
 
-            {/* Next Button */}
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
