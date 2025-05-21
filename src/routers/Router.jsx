@@ -21,6 +21,7 @@ import UsersBookings from "../pages/UsersBookings/UsersBookings";
 import UserControl from "../pages/UserControl/UserControl";
 import AdminControl from "../pages/AdminControl/AdminControl";
 import NotFound from "../components/NotFound/NotFound";
+import ResortInputForm from "../pages/ResortInputForm/ResortInputForm";
 
 export const router = createBrowserRouter([
   {
@@ -117,6 +118,10 @@ export const router = createBrowserRouter([
       {
         path: "admin-control",
         element: <AdminControl />,
+      },
+      {
+        path: "resort-input-form",
+        element: <ResortInputForm />,
       }
     ]
   }

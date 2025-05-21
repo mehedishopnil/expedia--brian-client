@@ -93,14 +93,6 @@ const AdminPanel = () => {
                 </button>
               </li>
 
-
-              <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/resort-input-form")}>
-                  <FaWpforms /> Resort Input Form
-                </button>
-              </li>
-
-              
               <li>
                 <button onClick={() => handleMenuItemClick("/admin-panel/admin-control")}>
                 <RiAdminLine /> Admin Control
@@ -108,11 +100,19 @@ const AdminPanel = () => {
               </li>
 
 
+
               <div className="divider"></div>
 
               <li>
                 <button onClick={() => handleMenuItemClick("/")}>
                   <FaHome /> Home
+                </button>
+              </li>
+
+
+              <li>
+                <button onClick={() => handleMenuItemClick("/admin-panel/resort-input-form")}>
+                  <FaWpforms /> Resort Input Form
                 </button>
               </li>
 
