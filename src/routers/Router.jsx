@@ -22,6 +22,7 @@ import UserControl from "../pages/UserControl/UserControl";
 import AdminControl from "../pages/AdminControl/AdminControl";
 import NotFound from "../components/NotFound/NotFound";
 import ResortInputForm from "../pages/ResortInputForm/ResortInputForm";
+import FlightSearch from "../components/FlightSearch/FlightSearch";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: "*",
         element: <NotFound />,
+      },
+      {
+        path: "flight-search",
+        element: <FlightSearch />,
       }
       
     ],
