@@ -2,13 +2,13 @@ import React from "react";
 import { IoFilter, IoAirplane } from "react-icons/io5";
 import { FaArrowRight, FaRegClock, FaUser } from "react-icons/fa";
 import { BsCalendarDate, BsFillBagCheckFill } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const FlightSearch = () => {
-  const location = useLocation();
+    const location = useLocation();
+  const navigate = useNavigate();
   const searchData = location.state || {};
 
-  console.log(searchData);
   const {
     goingTo,
     leavingFrom,
@@ -23,7 +23,6 @@ const FlightSearch = () => {
   const formatDate = (date) => {
     if (!date) return "N/A";
 
-    // If date is already a string (from ISO format), use it directly
     if (typeof date === "string") {
       return new Date(date).toLocaleDateString('en-US', { 
         weekday: 'short', 
@@ -32,7 +31,6 @@ const FlightSearch = () => {
       });
     }
     
-    // If it's a Date object, format it
     if (date instanceof Date) {
       return date.toLocaleDateString('en-US', { 
         weekday: 'short', 
@@ -55,6 +53,9 @@ const FlightSearch = () => {
       duration: "3h 15m",
       price: 249,
       stops: 0,
+      flightNumber: "SW123",
+      aircraft: "Boeing 737",
+      baggageAllowance: "1 x 23kg",
     },
     {
       id: 2,
@@ -65,6 +66,9 @@ const FlightSearch = () => {
       duration: "4h 15m",
       price: 189,
       stops: 1,
+      flightNumber: "OA456",
+      aircraft: "Airbus A320",
+      baggageAllowance: "1 x 20kg",
     },
     {
       id: 3,
@@ -75,12 +79,28 @@ const FlightSearch = () => {
       duration: "2h 30m",
       price: 299,
       stops: 0,
+      flightNumber: "GA789",
+      aircraft: "Boeing 787",
+      baggageAllowance: "2 x 23kg",
     },
   ];
 
-    
-    // Previous dates
-   // Generate alternative dates
+  // Handle flight selection
+  const handleFlightSelect = (flight) => {
+    const flightData = {
+      ...searchData, // Include all original search data
+      selectedFlight: {
+        ...flight,
+        departureDate: departureDate,
+        returnDate: returnDate,
+        from: leavingFrom,
+        to: goingTo
+      }
+    };
+    navigate('/flight-type', { state: flightData });
+  };
+
+  // Generate alternative dates
   const generateAlternativeDates = (baseDate, daysBefore = 2, daysAfter = 2) => {
     const dates = [];
     const base = baseDate ? new Date(baseDate) : new Date();
@@ -230,6 +250,7 @@ const FlightSearch = () => {
       </div>
 
       {/* Flight Results */}
+      {/* Flight Results */}
       <div className="bg-white rounded-xl shadow-md p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Recommended Departing Flights</h2>
@@ -240,7 +261,11 @@ const FlightSearch = () => {
 
         <div className="space-y-4">
           {mockFlights.map((flight) => (
-            <div key={flight.id} className="card card-side bg-base-100 shadow-md hover:shadow-lg transition-shadow">
+            <div 
+              key={flight.id} 
+              className="card card-side bg-base-100 shadow-md hover:shadow-lg transition-shadow cursor-pointer hover:bg-gray-50"
+              onClick={() => handleFlightSelect(flight)}
+            >
               <div className="card-body">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   {/* Airline Info */}
@@ -273,7 +298,15 @@ const FlightSearch = () => {
                   {/* Price */}
                   <div className="text-right">
                     <p className="text-2xl font-bold text-primary">${flight.price}</p>
-                    <button className="btn btn-primary btn-sm mt-2">Select</button>
+                    <button 
+                      className="btn btn-primary btn-sm mt-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFlightSelect(flight);
+                      }}
+                    >
+                      Select
+                    </button>
                   </div>
                 </div>
               </div>

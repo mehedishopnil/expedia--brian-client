@@ -1,16 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock, FaChevronDown } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const RentalCars = () => {
-  const [activeFilter, setActiveFilter] = useState("Rental Cars");
+  const navigate = useNavigate();
+  const [activeFilter] = useState("Rental Cars");
   const [showDiscountMenu, setShowDiscountMenu] = useState(false);
   const [selectedDiscount, setSelectedDiscount] = useState("Discount Code");
   const [pickupDate, setPickupDate] = useState(new Date());
-  const [dropoffDate, setDropoffDate] = useState(new Date());
-  const [pickupTime, setPickupTime] = useState("10:00 AM");
-  const [dropoffTime, setDropoffTime] = useState("10:00 AM");
+  const [dropoffDate, setDropoffDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
+  const [pickupTime, setPickupTime] = useState("10:00");
+  const [dropoffTime, setDropoffTime] = useState("10:00");
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropoffLocation, setDropoffLocation] = useState("");
+  const [showAARPRates, setShowAARPRates] = useState(false);
 
   const discountMenuRef = useRef(null);
 
@@ -33,9 +38,37 @@ const RentalCars = () => {
     setShowDiscountMenu(false);
   };
 
+  const handleSearch = () => {
+    // Prepare search data
+    const searchData = {
+      pickupLocation,
+      dropoffLocation,
+      pickupDate: pickupDate.toISOString(),
+      dropoffDate: dropoffDate.toISOString(),
+      pickupTime,
+      dropoffTime,
+      discountCode: selectedDiscount !== "Discount Code" ? selectedDiscount : null,
+      showAARPRates
+    };
+
+    // Navigate to car search page with the data
+    navigate('/car-search', { state: searchData });
+
+    console.log(searchData);
+  };
+
+  // Format time for display (converts "10:00" to "10:00 AM")
+  const formatTimeDisplay = (time) => {
+    if (!time) return "";
+    const [hours, minutes] = time.split(":");
+    const hourNum = parseInt(hours, 10);
+    return hourNum >= 12 
+      ? `${hourNum === 12 ? 12 : hourNum - 12}:${minutes} PM` 
+      : `${hourNum}:${minutes} AM`;
+  };
+
   return (
     <div className="bg-white p-4 md:p-6 max-w-5xl mx-auto">
-     
       {/* Rental Cars Form */}
       {activeFilter === "Rental Cars" && (
         <div className="flex flex-col gap-4">
@@ -49,6 +82,8 @@ const RentalCars = () => {
               <input
                 type="text"
                 placeholder="Enter pick-up location"
+                value={pickupLocation}
+                onChange={(e) => setPickupLocation(e.target.value)}
                 className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
               />
             </div>
@@ -64,6 +99,8 @@ const RentalCars = () => {
               <input
                 type="text"
                 placeholder="Enter drop-off location"
+                value={dropoffLocation}
+                onChange={(e) => setDropoffLocation(e.target.value)}
                 className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
               />
             </div>
@@ -79,6 +116,7 @@ const RentalCars = () => {
               <DatePicker
                 selected={pickupDate}
                 onChange={(date) => setPickupDate(date)}
+                minDate={new Date()}
                 className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
               />
             </div>
@@ -94,6 +132,7 @@ const RentalCars = () => {
               <DatePicker
                 selected={dropoffDate}
                 onChange={(date) => setDropoffDate(date)}
+                minDate={pickupDate}
                 className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
               />
             </div>
@@ -108,12 +147,17 @@ const RentalCars = () => {
                 <span className="text-xs md:text-sm text-gray-700 font-medium">
                   Pick-up Time
                 </span>
-                <input
-                  type="time"
-                  value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
-                />
+                <div className="flex items-center">
+                  <input
+                    type="time"
+                    value={pickupTime}
+                    onChange={(e) => setPickupTime(e.target.value)}
+                    className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+                  />
+                  <span className="ml-2 text-xs text-gray-500">
+                    {formatTimeDisplay(pickupTime)}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -124,12 +168,17 @@ const RentalCars = () => {
                 <span className="text-xs md:text-sm text-gray-700 font-medium">
                   Drop-off Time
                 </span>
-                <input
-                  type="time"
-                  value={dropoffTime}
-                  onChange={(e) => setDropoffTime(e.target.value)}
-                  className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
-                />
+                <div className="flex items-center">
+                  <input
+                    type="time"
+                    value={dropoffTime}
+                    onChange={(e) => setDropoffTime(e.target.value)}
+                    className="w-full text-xs text-gray-500 bg-transparent focus:outline-none"
+                  />
+                  <span className="ml-2 text-xs text-gray-500">
+                    {formatTimeDisplay(dropoffTime)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -137,12 +186,15 @@ const RentalCars = () => {
           {/* Show AARP Rates and Discount Codes */}
           <div className="flex md:flex-row gap-4">
             {/* Show AARP Rates */}
-            <button className="w-full md:w-auto text-xs md:text-sm border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full hover:bg-blue-500 hover:text-white transition-all">
+            <button 
+              className={`w-full md:w-auto text-xs md:text-sm border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full hover:bg-blue-500 hover:text-white transition-all ${showAARPRates ? 'bg-blue-500 text-white' : ''}`}
+              onClick={() => setShowAARPRates(!showAARPRates)}
+            >
               Show AARP Rates
             </button>
 
             {/* Discount Codes Dropdown */}
-            <div className="relative w-full md:w-auto">
+            <div className="relative w-full md:w-auto" ref={discountMenuRef}>
               <button
                 onClick={() => setShowDiscountMenu(!showDiscountMenu)}
                 className="flex items-center justify-between w-full text-xs border border-gray-300 rounded-full p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
@@ -156,10 +208,9 @@ const RentalCars = () => {
               {/* Discount Menu */}
               {showDiscountMenu && (
                 <div
-                  ref={discountMenuRef}
                   className="absolute mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10"
                 >
-                  {["Discount Code 1", "Discount Code 2", "Discount Code 3"].map(
+                  {["Discount Code", "AAA Member", "Corporate Code", "Military Discount"].map(
                     (discount) => (
                       <button
                         key={discount}
@@ -176,7 +227,11 @@ const RentalCars = () => {
           </div>
 
           {/* Search Button */}
-          <button className="w-full bg-[#1668e3] text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-500 transition-all text-xs md:text-sm">
+          <button 
+            onClick={handleSearch}
+            disabled={!pickupLocation || !dropoffLocation}
+            className={`w-full bg-[#1668e3] text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-500 transition-all text-xs md:text-sm ${!pickupLocation || !dropoffLocation ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
             Search
           </button>
         </div>

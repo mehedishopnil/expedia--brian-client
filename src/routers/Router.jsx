@@ -23,6 +23,8 @@ import AdminControl from "../pages/AdminControl/AdminControl";
 import NotFound from "../components/NotFound/NotFound";
 import ResortInputForm from "../pages/ResortInputForm/ResortInputForm";
 import FlightSearch from "../components/FlightSearch/FlightSearch";
+import FlightType from "../components/FlightType/FlightType";
+import CarSearch from "../components/CarSearch/CarSearch";
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +86,14 @@ export const router = createBrowserRouter([
       {
         path: "flight-search",
         element: <FlightSearch />,
+      },
+      {
+        path: "flight-type",
+        element: <FlightType />,
+      },
+      {
+        path: "car-search",
+        element: <CarSearch />,
       }
       
     ],
