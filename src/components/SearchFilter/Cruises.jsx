@@ -18,7 +18,15 @@ const Cruises = () => {
     "Africa", "Antarctic", "Asia", "Australia", "Bermuda", 
     "Canada", "England", "Central America", "Galapagos", 
     "Hawaii", "MiddleEast", "Pacific Coastal", "Panama Canal", 
-    "South America", "South Pacific", "Transatlantic", "Transpacific"
+    "South America", "South Pacific", "Transatlantic", "Transpacific",
+    "Baltic Sea", "Mediterranean", "Greek Isles", "Norwegian Fjords",
+    "New Zealand", "Iceland", "Dubai", "Singapore", "Japan",
+    "Hong Kong", "Vietnam", "Thailand", "Fiji", "Tahiti",
+    "Canary Islands", "Scandinavia", "Greenland", "Black Sea",
+    "Cuba", "Florida", "New England", "South Korea", "Malaysia",
+    "Indian Ocean", "Red Sea", "Seychelles", "Maldives", "Sri Lanka",
+    "Chile", "Argentina", "Brazil", "Costa Rica", "Puerto Rico",
+    "Barbados", "Jamaica", "St. Lucia", "St. Maarten", "Dominican Republic"
   ];
 
   const handleButtonClick = (type) => {
