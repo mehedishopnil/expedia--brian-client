@@ -8,19 +8,17 @@ const CruiseSearch = () => {
   const location = useLocation();
   const { destination, duration, departureDate } = location.state || {};
   const [selectedCruise, setSelectedCruise] = useState(null);
-  const [showDates, setShowDates] = useState(false);
   const [cruiseData, setCruiseData] = useState({});
   const [loading, setLoading] = useState(true);
-
-  console.log(cruiseData)
+  const [expandedCruises, setExpandedCruises] = useState({});
 
   useEffect(() => {
     // Load cruise data from JSON file
     const fetchCruiseData = async () => {
       try {
-     const response = await fetch('/DataInfo/cruiseData.json');
-     const data = await response.json();
-     setCruiseData(data);
+        const response = await fetch('/DataInfo/cruiseData.json');
+        const data = await response.json();
+        setCruiseData(data);
       } catch (error) {
         console.error('Error loading cruise data:', error);
       } finally {
@@ -43,9 +41,11 @@ const CruiseSearch = () => {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const handleShowDates = (cruise) => {
-    setSelectedCruise(cruise);
-    setShowDates(true);
+  const toggleDates = (cruiseId) => {
+    setExpandedCruises(prev => ({
+      ...prev,
+      [cruiseId]: !prev[cruiseId]
+    }));
   };
 
   if (loading) {
@@ -142,41 +142,27 @@ const CruiseSearch = () => {
                 <span className="badge badge-primary mt-2">Member Price</span>
               </div>
 
-              {/* Show Dates Button */}
+              {/* Show/Hide Dates Button */}
               <button 
-                onClick={() => handleShowDates(cruise)}
+                onClick={() => toggleDates(cruise.id)}
                 className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg"
               >
-                Show Dates
+                {expandedCruises[cruise.id] ? 'Hide Dates' : 'Show Dates'}
               </button>
+
+              {/* Dates Section - shown when expanded */}
+              {expandedCruises[cruise.id] && (
+                <div className="mt-4 border-t pt-4">
+                  <CruiseDates 
+                    cruise={cruise} 
+                    duration={duration}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}
       </div>
-
-      {/* Cruise Dates Modal */}
-      {showDates && selectedCruise && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold">{selectedCruise.name} Available Dates</h3>
-                <button 
-                  onClick={() => setShowDates(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-              <CruiseDates 
-                cruise={selectedCruise} 
-                duration={duration}
-                onClose={() => setShowDates(false)}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
