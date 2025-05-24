@@ -25,6 +25,7 @@ import ResortInputForm from "../pages/ResortInputForm/ResortInputForm";
 import FlightSearch from "../components/FlightSearch/FlightSearch";
 import FlightType from "../components/FlightType/FlightType";
 import CarSearch from "../components/CarSearch/CarSearch";
+import CruiseSearch from "../components/CruiseSearch/CruiseSearch";
 
 export const router = createBrowserRouter([
   {
@@ -56,17 +57,17 @@ export const router = createBrowserRouter([
         element: <HotelSearch />,
       },
       {
-          path: "/account",
-          element: <Account />,
-        },
-        {
-          path: "profile",
-          element: <Profile />,
-        },
-        {
-          path: "communications",
-          element: <Communications />,
-        },
+        path: "/account",
+        element: <Account />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "communications",
+        element: <Communications />,
+      },
       {
         path: "payment",
         element: <Payment />,
@@ -76,8 +77,8 @@ export const router = createBrowserRouter([
         element: <Checkout />,
       },
       {
-          path: "confirm-booking",
-          element: <ConfirmBooking />,
+        path: "confirm-booking",
+        element: <ConfirmBooking />,
       },
       {
         path: "*",
@@ -94,8 +95,11 @@ export const router = createBrowserRouter([
       {
         path: "car-search",
         element: <CarSearch />,
-      }
-      
+      },
+      {
+        path: "cruise-search",
+        element: <CruiseSearch />,
+      },
     ],
   },
 
@@ -110,17 +114,17 @@ export const router = createBrowserRouter([
       {
         path: "my-bookings",
         element: <MyBookings />,
-      }
-    ]
+      },
+    ],
   },
-  
+
   {
     path: "/admin-panel",
     element: <AdminPanel />,
     children: [
       {
         path: "admin-overview",
-        element:<AdminOverview />,
+        element: <AdminOverview />,
       },
       {
         path: "users-bookings",
@@ -137,7 +141,7 @@ export const router = createBrowserRouter([
       {
         path: "resort-input-form",
         element: <ResortInputForm />,
-      }
-    ]
-  }
+      },
+    ],
+  },
 ]);

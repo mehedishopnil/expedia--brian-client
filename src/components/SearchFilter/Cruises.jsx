@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaMapMarkerAlt, FaCalendarAlt, FaShip } from "react-icons/fa";
+import { FaMapMarkerAlt, FaCalendarAlt, FaShip, FaChevronDown } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
@@ -10,21 +10,40 @@ const Cruises = () => {
   const [departureDate, setDepartureDate] = useState(new Date());
   const [goingTo, setGoingTo] = useState("");
   const [duration, setDuration] = useState("7 nights");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
+
+  const cruiseDestinations = [
+    "Alaska", "Bahamas", "Caribbean", "Europe", "Mexico", 
+    "Africa", "Antarctic", "Asia", "Australia", "Bermuda", 
+    "Canada", "England", "Central America", "Galapagos", 
+    "Hawaii", "MiddleEast", "Pacific Coastal", "Panama Canal", 
+    "South America", "South Pacific", "Transatlantic", "Transpacific"
+  ];
 
   const handleButtonClick = (type) => {
     setPopupType(type);
     setShowPopup(true);
+    if (type === "goingTo") {
+      setShowSuggestions(false);
+    }
   };
 
   const handleSearch = () => {
     if (goingTo.trim()) {
-      navigate(
-        `/cruise-search?destination=${encodeURIComponent(
-          goingTo.trim()
-        )}&duration=${encodeURIComponent(duration)}`
-      );
+      const searchData = {
+        destination: goingTo.trim(),
+        duration,
+        departureDate: departureDate.toISOString()
+      };
+      navigate('/cruise-search', { state: searchData });
     }
+  };
+
+  const handleDestinationSelect = (destination) => {
+    setGoingTo(destination);
+    setShowSuggestions(false);
+    setShowPopup(false);
   };
 
   const durationOptions = [
@@ -42,20 +61,41 @@ const Cruises = () => {
 
       <div className="flex flex-col md:flex-row gap-3">
         {/* Going To Button */}
-        <button
-          onClick={() => handleButtonClick("goingTo")}
-          className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
-        >
-          <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
-          <div className="flex flex-col text-left">
-            <span className="text-sm md:text-base text-gray-700 font-medium">
-              Going to
-            </span>
-            <span className="text-xs text-gray-500">
-              {goingTo || "Any destination"}
-            </span>
-          </div>
-        </button>
+        <div className="relative w-full">
+          <button
+            onClick={() => {
+              setPopupType("goingTo");
+              setShowPopup(true);
+              setShowSuggestions(true);
+            }}
+            className="flex items-center w-full border border-gray-300 rounded-lg p-2 md:p-3 bg-gray-50 hover:bg-gray-100 focus:ring-2 ring-blue-200"
+          >
+            <FaMapMarkerAlt className="text-gray-500 text-lg mr-3" />
+            <div className="flex flex-col text-left w-full">
+              <span className="text-sm md:text-base text-gray-700 font-medium">
+                Going to
+              </span>
+              <span className="text-xs text-gray-500">
+                {goingTo || "Any destination"}
+              </span>
+            </div>
+            <FaChevronDown className="text-gray-500" />
+          </button>
+
+          {showSuggestions && (
+            <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              {cruiseDestinations.map((destination) => (
+                <button
+                  key={destination}
+                  onClick={() => handleDestinationSelect(destination)}
+                  className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  {destination}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Departing Between Button */}
         <button
@@ -75,6 +115,7 @@ const Cruises = () => {
               })}
             </span>
           </div>
+          <FaChevronDown className="text-gray-500" />
         </button>
 
         {/* Duration Button */}
@@ -89,14 +130,17 @@ const Cruises = () => {
             </span>
             <span className="text-xs text-gray-500">{duration}</span>
           </div>
+          <FaChevronDown className="text-gray-500" />
         </button>
 
         {/* Search Button */}
         <button
           onClick={handleSearch}
-          className="w-full md:w-auto bg-[#1668e3] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base flex items-center justify-center gap-2"
+          disabled={!goingTo}
+          className={`w-full md:w-auto bg-[#1668e3] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-full hover:bg-blue-500 transition-all text-sm md:text-base flex items-center justify-center gap-2 ${
+            !goingTo ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          
           <span>Search</span>
         </button>
       </div>
@@ -104,7 +148,7 @@ const Cruises = () => {
       {/* Popup */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 h-4/6 md:w-1/2 max-h-[100vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">
               {popupType === "goingTo"
                 ? "Enter Destination"
@@ -118,17 +162,40 @@ const Cruises = () => {
                 <DatePicker
                   selected={departureDate}
                   onChange={(date) => setDepartureDate(date)}
+                  minDate={new Date()}
                   inline
                 />
               </div>
             ) : popupType === "goingTo" ? (
-              <input
-                type="text"
-                placeholder="Enter cruise destination"
-                value={goingTo}
-                onChange={(e) => setGoingTo(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-2 mb-4"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search cruise destinations"
+                  value={goingTo}
+                  onChange={(e) => {
+                    setGoingTo(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  className="w-full border border-gray-300 rounded-lg p-2 mb-4"
+                />
+                {showSuggestions && (
+                  <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-50 overflow-y-auto">
+                    {cruiseDestinations
+                      .filter(dest => 
+                        dest.toLowerCase().includes(goingTo.toLowerCase())
+                      )
+                      .map((destination) => (
+                        <button
+                          key={destination}
+                          onClick={() => handleDestinationSelect(destination)}
+                          className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          {destination}
+                        </button>
+                      ))}
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="space-y-2">
                 {durationOptions.map((option) => (
@@ -152,14 +219,20 @@ const Cruises = () => {
 
             <div className="flex justify-end gap-4 mt-4">
               <button
-                onClick={() => setShowPopup(false)}
+                onClick={() => {
+                  setShowPopup(false);
+                  setShowSuggestions(false);
+                }}
                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
               >
                 Cancel
               </button>
               {popupType !== "duration" && (
                 <button
-                  onClick={() => setShowPopup(false)}
+                  onClick={() => {
+                    setShowPopup(false);
+                    setShowSuggestions(false);
+                  }}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                   Save
