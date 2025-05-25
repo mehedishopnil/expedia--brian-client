@@ -704,6 +704,18 @@
       "route": "Sydney → Dunedin",
       "price": 1399,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Norwegian Spirit",
+      "route": "Auckland → Christchurch",
+      "price": 1499,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Celebrity Solstice",
+      "route": "Wellington → Fiordland",
+      "price": 1599,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Iceland": [
@@ -712,6 +724,18 @@
       "route": "Reykjavik → Akureyri",
       "price": 1799,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Norwegian Star",
+      "route": "Reykjavik → Isafjordur",
+      "price": 1899,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Silver Whisper",
+      "route": "Akureyri → Reykjavik",
+      "price": 1999,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
   "Dubai": [
@@ -720,6 +744,18 @@
       "route": "Dubai → Muscat",
       "price": 1099,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "MSC Bellissima",
+      "route": "Dubai → Abu Dhabi",
+      "price": 999,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Jewel of the Seas",
+      "route": "Dubai → Doha",
+      "price": 1199,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "Singapore": [
