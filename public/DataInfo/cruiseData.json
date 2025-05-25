@@ -728,6 +728,18 @@
       "route": "Singapore → Penang",
       "price": 899,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Genting Dream",
+      "route": "Singapore → Langkawi",
+      "price": 799,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Voyager of the Seas",
+      "route": "Singapore → Phuket",
+      "price": 999,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "Japan": [
@@ -736,6 +748,18 @@
       "route": "Yokohama → Osaka",
       "price": 1299,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Celebrity Millennium",
+      "route": "Tokyo → Kyoto",
+      "price": 1399,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Costa Serena",
+      "route": "Osaka → Fukuoka",
+      "price": 1199,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Hong Kong": [
@@ -744,14 +768,39 @@
       "route": "Hong Kong → Okinawa",
       "price": 1099,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Genting Dream",
+      "route": "Hong Kong → Halong Bay",
+      "price": 999,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Voyager of the Seas",
+      "route": "Hong Kong → Manila",
+      "price": 899,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
+  
   "Vietnam": [
     {
       "name": "Celebrity Millennium",
       "route": "Hong Kong → Ho Chi Minh City",
       "price": 1199,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Azamara Quest",
+      "route": "Singapore → Da Nang",
+      "price": 1399,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Norwegian Spirit",
+      "route": "Bangkok → Ha Long Bay",
+      "price": 1499,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
   "Thailand": [
@@ -760,6 +809,18 @@
       "route": "Singapore → Phuket",
       "price": 999,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Spectrum of the Seas",
+      "route": "Bangkok → Koh Samui",
+      "price": 1099,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Costa Fortuna",
+      "route": "Singapore → Pattaya",
+      "price": 899,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "Fiji": [
@@ -768,6 +829,18 @@
       "route": "Sydney → Suva",
       "price": 1299,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Ovation of the Seas",
+      "route": "Auckland → Lautoka",
+      "price": 1399,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Carnival Spirit",
+      "route": "Brisbane → Nadi",
+      "price": 1199,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "Tahiti": [
@@ -778,76 +851,24 @@
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
-  "Canary Islands": [
-    {
-      "name": "AIDAnova",
-      "route": "Las Palmas → Tenerife",
-      "price": 1099,
-      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
-    }
-  ],
-  "Scandinavia": [
-    {
-      "name": "Costa Favolosa",
-      "route": "Copenhagen → Oslo",
-      "price": 1199,
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
-    }
-  ],
-  "Greenland": [
-    {
-      "name": "Fram",
-      "route": "Reykjavik → Nuuk",
-      "price": 2999,
-      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
-    }
-  ],
-  "Black Sea": [
-    {
-      "name": "Azamara Quest",
-      "route": "Istanbul → Odessa",
-      "price": 1599,
-      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
-    }
-  ],
-  "Cuba": [
-    {
-      "name": "MSC Opera",
-      "route": "Havana → Cienfuegos",
-      "price": 899,
-      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
-    }
-  ],
-  "Florida": [
-    {
-      "name": "Disney Dream",
-      "route": "Port Canaveral → Nassau",
-      "price": 799,
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
-    }
-  ],
-  "New England": [
-    {
-      "name": "Norwegian Gem",
-      "route": "Boston → Bar Harbor",
-      "price": 999,
-      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
-    }
-  ],
-  "South Korea": [
-    {
-      "name": "Spectrum of the Seas",
-      "route": "Shanghai → Busan",
-      "price": 1199,
-      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
-    }
-  ],
   "Malaysia": [
     {
       "name": "Genting Dream",
       "route": "Singapore → Langkawi",
       "price": 899,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Spectrum of the Seas",
+      "route": "Penang → Kuala Lumpur",
+      "price": 799,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Costa Serena",
+      "route": "Kota Kinabalu → Singapore",
+      "price": 999,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
   "Indian Ocean": [
@@ -856,6 +877,18 @@
       "route": "Mauritius → Seychelles",
       "price": 1799,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Silver Spirit",
+      "route": "Maldives → Madagascar",
+      "price": 2499,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Le Lyrial",
+      "route": "Reunion Island → Seychelles",
+      "price": 1999,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Red Sea": [
@@ -864,6 +897,18 @@
       "route": "Safaga → Aqaba",
       "price": 1399,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Costa Diadema",
+      "route": "Jeddah → Sharm El-Sheikh",
+      "price": 1299,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Silver Whisper",
+      "route": "Aqaba → Port Sudan",
+      "price": 1599,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "Seychelles": [
@@ -872,6 +917,18 @@
       "route": "Mahe → Praslin",
       "price": 2499,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Silver Spirit",
+      "route": "Mahe → La Digue",
+      "price": 2299,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Crystal Esprit",
+      "route": "Praslin → Mahe",
+      "price": 2699,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "Maldives": [
@@ -880,6 +937,18 @@
       "route": "Male → Colombo",
       "price": 1899,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Silver Shadow",
+      "route": "Male → Maafushi",
+      "price": 1999,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Le Champlain",
+      "route": "Male → Addu Atoll",
+      "price": 2199,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
   "Sri Lanka": [
@@ -888,6 +957,18 @@
       "route": "Colombo → Hambantota",
       "price": 999,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Costa Fortuna",
+      "route": "Colombo → Trincomalee",
+      "price": 1199,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Silver Muse",
+      "route": "Hambantota → Colombo",
+      "price": 1399,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "Chile": [
@@ -896,6 +977,18 @@
       "route": "Valparaiso → Punta Arenas",
       "price": 1599,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Norwegian Star",
+      "route": "Santiago → Puerto Montt",
+      "price": 1499,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Silver Explorer",
+      "route": "Punta Arenas → Valparaiso",
+      "price": 1799,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Argentina": [
@@ -904,6 +997,18 @@
       "route": "Buenos Aires → Ushuaia",
       "price": 1699,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Celebrity Eclipse",
+      "route": "Buenos Aires → Puerto Madryn",
+      "price": 1499,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Silver Wind",
+      "route": "Ushuaia → Buenos Aires",
+      "price": 1899,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "Brazil": [
@@ -912,6 +1017,18 @@
       "route": "Rio de Janeiro → Salvador",
       "price": 1199,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Costa Fascinosa",
+      "route": "Santos → Rio de Janeiro",
+      "price": 999,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Silver Spirit",
+      "route": "Salvador → Recife",
+      "price": 1399,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "Costa Rica": [
@@ -920,6 +1037,18 @@
       "route": "Puntarenas → Panama City",
       "price": 1399,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Silver Explorer",
+      "route": "Puntarenas → San Juan del Sur",
+      "price": 1499,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Norwegian Jewel",
+      "route": "Limon → Colon",
+      "price": 1299,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "Puerto Rico": [
@@ -928,6 +1057,18 @@
       "route": "San Juan → St. Thomas",
       "price": 899,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Celebrity Summit",
+      "route": "San Juan → St. Kitts",
+      "price": 999,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Royal Caribbean",
+      "route": "San Juan → Antigua",
+      "price": 1099,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Barbados": [
@@ -936,6 +1077,18 @@
       "route": "Bridgetown → St. Lucia",
       "price": 1299,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Celebrity Reflection",
+      "route": "Bridgetown → Grenada",
+      "price": 1399,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Norwegian Dawn",
+      "route": "Bridgetown → Dominica",
+      "price": 1199,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
     }
   ],
   "Jamaica": [
@@ -944,6 +1097,18 @@
       "route": "Montego Bay → Ocho Rios",
       "price": 999,
       "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Carnival Sunrise",
+      "route": "Montego Bay → Falmouth",
+      "price": 899,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "Royal Caribbean",
+      "route": "Ocho Rios → Grand Cayman",
+      "price": 1099,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
     }
   ],
   "St. Lucia": [
@@ -952,6 +1117,18 @@
       "route": "Castries → Barbados",
       "price": 1099,
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Royal Clipper",
+      "route": "Castries → Martinique",
+      "price": 999,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Norwegian Epic",
+      "route": "Castries → Antigua",
+      "price": 1199,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ],
   "St. Maarten": [
@@ -960,6 +1137,18 @@
       "route": "Philipsburg → San Juan",
       "price": 999,
       "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Celebrity Equinox",
+      "route": "Philipsburg → Tortola",
+      "price": 1099,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Norwegian Bliss",
+      "route": "Philipsburg → St. Kitts",
+      "price": 1199,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
     }
   ],
   "Dominican Republic": [
@@ -968,6 +1157,31 @@
       "route": "La Romana → Grand Turk",
       "price": 899,
       "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
+    },
+    {
+      "name": "MSC Seaside",
+      "route": "Santo Domingo → St. Thomas",
+      "price": 999,
+      "image": "https://krfbe.twic.pics/library/original/aussenansicht.4erir5ax.jpg?twic=v1/cover=4:2.25/resize=768"
+    },
+    {
+      "name": "Norwegian Escape",
+      "route": "Puerto Plata → Nassau",
+      "price": 849,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Noordam.jpg/1200px-Noordam.jpg"
+    },
+    {
+      "name": "Celebrity Equinox",
+      "route": "La Romana → Aruba",
+      "price": 1099,
+      "image": "https://cruiseindustrynews.com/wp-content/uploads/2018/09/goldenprincess.jpg.webp"
+    },
+    {
+      "name": "Royal Caribbean",
+      "route": "Santo Domingo → Cozumel",
+      "price": 1199,
+      "image": "https://static.vesselfinder.net/ship-photo/9229659-310376000-d8f654ac46fed19492ee563b98e67965/1?v1"
     }
   ]
+
 }
