@@ -172,6 +172,12 @@ const Header = () => {
               </Link>
 
               <Link
+                to="/hotels"
+                className="px-3 xl:px-4 py-2 text-slate-700 hover:text-blue-600 font-medium text-sm transition-colors duration-200 rounded-lg hover:bg-blue-50 whitespace-nowrap">
+              Hotels
+              </Link>
+
+              <Link
                 to="/list-your-property"
                 className="px-3 xl:px-4 py-2 text-slate-700 hover:text-blue-600 font-medium text-sm transition-colors duration-200 rounded-lg hover:bg-blue-50 whitespace-nowrap"
               >

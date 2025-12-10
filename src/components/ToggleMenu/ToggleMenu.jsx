@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { FaSearch, FaQuestionCircle, FaHotel } from "react-icons/fa";
-import { IoMdMail } from "react-icons/io";
-import { BsFlag } from "react-icons/bs";
-import { MdAccountCircle, MdOutlineTravelExplore } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../providers/AuthProvider/AuthProvider";
+import React, { useContext } from 'react';
+import { FaSearch, FaQuestionCircle, FaHotel } from 'react-icons/fa';
+import { IoMdMail } from 'react-icons/io';
+import { BsFlag } from 'react-icons/bs';
+import { MdAccountCircle, MdOutlineTravelExplore } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 const ToggleMenu = ({ closeMenu }) => {
   const { signOut, user, role } = useContext(AuthContext);
-  
+
   const handleMenuItemClick = () => {
     closeMenu();
   };
@@ -19,115 +19,154 @@ const ToggleMenu = ({ closeMenu }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md w-full max-w-[320px] p-4">
+    <div className="absolute right-0 top-5 w-[340px] bg-white rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-gray-100 overflow-hidden z-50 font-sans animate-fade-in-down">
       {/* User Info Section */}
-      {user ? (
-        <div className="mb-3">
-          <h3 className="text-[14px] font-semibold text-gray-900 mb-1">
-            Hi, {user.name || 'Member'}
-          </h3>
-          <p className="text-[12px] text-gray-600 mb-2">
-            {user.email}
-          </p>
-          {role === 'admin' && (
-            <p className="text-[12px] text-blue-600 font-medium">Admin User</p>
-          )}
-        </div>
-      ) : (
-        <>
-          <h3 className="text-[14px] font-semibold text-gray-900 mb-2 leading-snug">
-            Unlock instant savings with <br />
-            <span className="text-blue-600">Member Prices.</span>
-          </h3>
-          <Link to="/signin" onClick={handleMenuItemClick}>
-            <button className="w-full bg-blue-600 text-white font-medium text-[14px] py-1 rounded-full hover:bg-blue-700 transition-all duration-200 mb-1">
-              Sign in
-            </button>
-          </Link>
-          <p className="text-gray-600 text-[12px] text-center cursor-pointer hover:text-blue-600" onClick={handleMenuItemClick}>
-            Learn more
-          </p>
-        </>
-      )}
+      <div className="p-6 pb-4">
+        {user ? (
+          <div className="flex flex-col gap-1">
+            <h3 className="text-xl font-bold text-gray-900 truncate">
+              Hi, {user.name || 'Traveler'}
+            </h3>
+            <p className="text-sm text-gray-500 truncate">{user.email}</p>
+            {role === 'admin' && (
+              <span className="inline-block mt-1 text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full w-fit">
+                Admin
+              </span>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <h3 className="text-[1.125rem] font-bold text-gray-900 leading-snug">
+              Unlock instant savings with{' '}
+              <span className="text-blue-600">Member Prices.</span>
+            </h3>
+            <Link to="/signin" onClick={handleMenuItemClick} className="block">
+              <button className="w-full bg-[#1668e3] hover:bg-[#1254b7] text-white font-semibold text-[15px] py-2.5 rounded-full transition-colors duration-200 shadow-sm">
+                Sign in
+              </button>
+            </Link>
+            <Link
+              to="/learn-more"
+              onClick={handleMenuItemClick}
+              className="block text-center text-[14px] text-[#1668e3] hover:underline font-medium"
+            >
+              Create a free account
+            </Link>
+          </div>
+        )}
+      </div>
 
-      {/* Divider */}
-      <hr className="border-gray-300 my-3" />
+      <hr className="border-gray-200" />
 
       {/* Menu Items */}
-      <div className="space-y-3">
-        <Link to="/hotels" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaHotel />} text="Hotels" />
-        </Link>
+      <div className="py-2">
+        <MenuLink
+          to="/hotels"
+          icon={<FaHotel />}
+          text="Hotels"
+          onClick={handleMenuItemClick}
+        />
 
         {user && (
           <>
-            <Link to="/account" onClick={handleMenuItemClick}>
-              <MenuItem icon={<MdAccountCircle />} text="Account" />
-            </Link>
-            
-            {/* Conditionally render AdminPanel or Dashboard based on role */}
+            <MenuLink
+              to="/account"
+              icon={<MdAccountCircle />}
+              text="Account"
+              onClick={handleMenuItemClick}
+            />
             {role === 'admin' ? (
-              <Link to="/admin-panel/admin-overview" onClick={handleMenuItemClick}>
-                <MenuItem icon={<MdOutlineTravelExplore />} text="Admin Panel" />
-              </Link>
+              <MenuLink
+                to="/admin-panel/admin-overview"
+                icon={<MdOutlineTravelExplore />}
+                text="Admin Panel"
+                onClick={handleMenuItemClick}
+              />
             ) : (
-              <Link to="/user-dashboard/user-overview" onClick={handleMenuItemClick}>
-                <MenuItem icon={<MdOutlineTravelExplore />} text="Dashboard" />
-              </Link>
+              <MenuLink
+                to="/user-dashboard/user-overview"
+                icon={<MdOutlineTravelExplore />}
+                text="Dashboard"
+                onClick={handleMenuItemClick}
+              />
             )}
           </>
         )}
 
-        <Link to="/inbox" onClick={handleMenuItemClick}>
-          <MenuItem icon={<IoMdMail />} text="Inbox" />
-        </Link>
+        <MenuLink
+          to="/inbox"
+          icon={<IoMdMail />}
+          text="Inbox"
+          onClick={handleMenuItemClick}
+        />
+        <MenuLink
+          to="/shop-travel"
+          icon={<FaSearch />}
+          text="Shop travel"
+          onClick={handleMenuItemClick}
+        />
+        <MenuLink
+          to="/support"
+          icon={<FaQuestionCircle />}
+          text="Support"
+          onClick={handleMenuItemClick}
+        />
+        <MenuLink
+          to="/language-currency"
+          icon={<BsFlag />}
+          text="English • USD $"
+          onClick={handleMenuItemClick}
+        />
+      </div>
 
-        <Link to="/shop-travel" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaSearch />} text="Shop travel" />
-        </Link>
+      <hr className="border-gray-200 mx-4" />
 
-        <Link to="/support" onClick={handleMenuItemClick}>
-          <MenuItem icon={<FaQuestionCircle />} text="Support" />
-        </Link>
-
-        <Link to="/language-currency" onClick={handleMenuItemClick}>
-          <MenuItem icon={<BsFlag />} text="English • USD $" />
-        </Link>
-
-        <hr className="border-gray-300" />
-
-        <Link to="/list-your-property" onClick={handleMenuItemClick}>
-          <MenuItem icon={<MdOutlineTravelExplore />} text="List your property" />
-        </Link>
-        <Link to="/trips" onClick={handleMenuItemClick}>
-          <MenuItem text="Trips" />
-        </Link>
-        <Link to="/feedback" onClick={handleMenuItemClick}>
-          <MenuItem text="Feedback" />
-        </Link>
+      <div className="py-2">
+        <MenuLink
+          to="/list-your-property"
+          text="List your property"
+          onClick={handleMenuItemClick}
+        />
+        <MenuLink to="/trips" text="Trips" onClick={handleMenuItemClick} />
+        <MenuLink
+          to="/feedback"
+          text="Feedback"
+          onClick={handleMenuItemClick}
+        />
 
         {user && (
-          <>
-            <hr className="border-gray-300" />
-            <button 
+          <div className="mt-1 px-4 py-2">
+            <button
               onClick={handleSignOut}
-              className="w-full text-gray-600 font-medium text-[13px] py-1 rounded-md hover:bg-gray-100 transition-all duration-200 flex items-center gap-2 px-2"
+              className="w-full text-center text-[#1668e3] font-medium text-[14px] hover:underline transition-all"
             >
-              <span>Sign out</span>
+              Sign out
             </button>
-          </>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-// Reusable MenuItem Component
-const MenuItem = ({ icon, text }) => (
-  <div className="flex items-center gap-2 text-gray-700 cursor-pointer px-2 py-1 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-all duration-200">
-    {icon && <span className="text-lg">{icon}</span>}
-    <span className="text-[13px] font-medium">{text}</span>
-  </div>
+// Refactored Reusable MenuItem Component for cleaner code
+const MenuLink = ({ to, icon, text, onClick }) => (
+  <Link to={to} onClick={onClick} className="block group">
+    <div className="flex items-center gap-4 px-6 py-3 hover:bg-gray-50 transition-colors duration-150">
+      {icon && (
+        <span className="text-gray-500 group-hover:text-gray-900 text-lg">
+          {icon}
+        </span>
+      )}
+      <span
+        className={`text-[15px] font-normal text-gray-700 group-hover:text-gray-900 ${
+          !icon ? 'ml-0' : ''
+        }`}
+      >
+        {text}
+      </span>
+    </div>
+  </Link>
 );
 
 export default ToggleMenu;
