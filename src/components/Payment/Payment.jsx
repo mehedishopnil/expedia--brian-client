@@ -1,137 +1,299 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FaTimes, FaCheck } from "react-icons/fa";
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  FaTimes,
+  FaCheck,
+  FaCreditCard,
+  FaPaypal,
+  FaRegCreditCard,
+} from 'react-icons/fa';
+import { RiSecurePaymentLine } from 'react-icons/ri';
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const reservationData = location.state?.reservationData;
   const basePrice = reservationData?.pricing?.totalPrice || 0;
-  
-  // Calculate taxes and fees
-  // const tax = basePrice * 0.20; // 20% tax
-  // const fees = basePrice * 0.30; // 30% fees
-  // const totalAmount = basePrice + tax + fees;
+
   const depositAmount = 221; // Fixed deposit amount
-  const depositTax = depositAmount * 0.20;
-  const depositFees = depositAmount * 0.30;
+  const depositTax = depositAmount * 0.2;
+  const depositFees = depositAmount * 0.3;
   const depositTotal = depositAmount + depositTax + depositFees;
 
   // Generate a random near future date (3-7 days from now)
   const randomDays = Math.floor(Math.random() * 5) + 3;
   const futureDate = new Date();
   futureDate.setDate(futureDate.getDate() + randomDays);
-  const refundableDate = futureDate.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
+  const refundableDate = futureDate.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
   });
 
   const handleBackClick = () => {
     navigate(-1); // Go back to previous page
   };
 
-  const handlePaymentClick = (paymentType) => {
+  const handlePaymentClick = paymentType => {
     const paymentData = {
       ...reservationData,
       paymentDetails: {
         type: paymentType,
         baseAmount: paymentType === 'full' ? basePrice : depositAmount,
-        // tax: paymentType === 'full' ? tax : depositTax,
-        // fees: paymentType === 'full' ? fees : depositFees,
-        // totalAmount: paymentType === 'full' ? totalAmount : depositTotal,
         isDeposit: paymentType === 'deposit',
         refundableDate,
-      }
+      },
     };
 
     navigate('/checkout', { state: { paymentData } });
   };
 
   return (
-    <div className="mx-auto p-4">
-      {/* Header with close button */}
-      <div className="flex gap-3 items-center mb-6">
-        <button
-          onClick={handleBackClick}
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <FaTimes size={24} />
-        </button>
-        <h1 className="text-2xl font-bold text-gray-800">
-          Your payment options
-        </h1>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center mb-6">
+            <button
+              onClick={handleBackClick}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+              aria-label="Go back"
+            >
+              <FaTimes className="text-gray-600 text-xl" />
+            </button>
+            <div className="ml-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                Choose Payment Method
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Select how you'd like to pay for your reservation
+              </p>
+            </div>
+          </div>
 
-      {/* Refundable notice */}
-      <div className="flex items-center bg-green-50 p-3 rounded-lg mb-6">
-        <FaCheck className="text-green-500 mr-2" />
-        <span className="text-sm text-gray-700">
-          Fully refundable before {refundableDate}
-        </span>
-      </div>
-
-      {/* Payment Options */}
-      <div className="space-y-6">
-        {/* Pay Now Card */}
-        <div className="border border-gray-200 rounded-lg p-4">
-          <div className="">
-            <div className="w-full space-y-3">
-              <h2 className="text-lg font-semibold mb-3">Pay now</h2>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700 mb-4">
-                <li>More ways to pay: use Debit/Credit card or Paypal</li>
-                <li>You can use valid Travel + Leisure coupon</li>
-              </ul>
-              <div className="text-right">
-                <p className="text-2xl font-semibold">${basePrice.toFixed(2)}</p>
-                {/* <p className="text-sm">total ${totalAmount.toFixed(2)}</p>
-                <p className="text-sm text-gray-600">includes taxes & fees</p> */}
+          {/* Refundable Notice */}
+          <div className="flex items-center bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 mb-8">
+            <div className="flex-shrink-0">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <FaCheck className="text-green-600 text-lg" />
               </div>
-              <button 
-                onClick={() => handlePaymentClick('full')}
-                className="bg-blue-600 text-white w-full py-2 px-6 rounded-full hover:bg-blue-700 transition-colors"
-              >
-                Pay now
-              </button>
-              <p className="text-xs text-center text-gray-500 mt-2">
-                You will not be charged yet
+            </div>
+            <div className="ml-4">
+              <p className="text-sm md:text-base font-medium text-gray-900">
+                Fully refundable until {refundableDate}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                Cancel for free before this date
               </p>
             </div>
           </div>
         </div>
 
-        {/* Reserve with Deposit Card */}
-        <div className="border border-gray-200 rounded-lg p-4">
-          <div className="">
-            <div className="space-y-3">
-              <h2 className="text-lg font-semibold mb-3">
-                Reserve with deposit
-              </h2>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700 mb-4">
-                <li>Book with an initial payment of ${depositAmount}</li>
-                <li>
-                  The property will charge you the remaining amount based on the
-                  schedule you'll see at checkout
-                </li>
-              </ul>
-
-              <div className="text-right">
-                <p className="text-2xl font-semibold">${depositAmount.toFixed(2)}</p>
-                {/* <p className="text-sm">total ${depositTotal.toFixed(2)}</p>
-                <p className="text-sm text-gray-600">includes taxes & fees</p> */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Pay Now Card */}
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200">
+            <div className="p-6 md:p-8">
+              {/* Card Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                    Pay in Full
+                  </h2>
+                  <p className="text-gray-600 mt-1">
+                    Pay the entire amount now
+                  </p>
+                </div>
+                <div className="hidden sm:flex items-center space-x-2 text-blue-600">
+                  <FaCreditCard className="text-xl" />
+                  <FaPaypal className="text-xl" />
+                  <RiSecurePaymentLine className="text-2xl" />
+                </div>
               </div>
 
-              <button 
-                onClick={() => handlePaymentClick('deposit')}
-                className="bg-blue-600 text-white w-full py-2 px-6 rounded-full hover:bg-blue-700 transition-colors"
+              {/* Benefits */}
+              <div className="space-y-3 mb-8">
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    More ways to pay: Debit/Credit card or Paypal
+                  </span>
+                </div>
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    Use valid Travel + Leisure coupons
+                  </span>
+                </div>
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    No future payments required
+                  </span>
+                </div>
+              </div>
+
+              {/* Price */}
+              <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Total amount</p>
+                    <p className="text-3xl md:text-4xl font-bold text-gray-900">
+                      ${basePrice.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-600">Payment due</p>
+                    <p className="text-lg font-semibold text-gray-900">Today</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <button
+                onClick={() => handlePaymentClick('full')}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl font-semibold text-lg"
               >
-                Pay deposit
+                Pay Full Amount Now
               </button>
-              <p className="text-xs text-center text-gray-500 mt-2">
-                You will not be charged yet
+
+              <p className="text-center text-gray-500 text-sm mt-4">
+                <RiSecurePaymentLine className="inline mr-1 text-blue-500" />
+                Secure 256-bit SSL encryption
               </p>
             </div>
           </div>
+
+          {/* Reserve with Deposit Card */}
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-200">
+            <div className="p-6 md:p-8">
+              {/* Card Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                    Pay Deposit
+                  </h2>
+                  <p className="text-gray-600 mt-1">Secure your booking now</p>
+                </div>
+                <div className="hidden sm:block bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+                  Most Flexible
+                </div>
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-3 mb-8">
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    Book with only{' '}
+                    <span className="font-semibold">${depositAmount}</span>{' '}
+                    initial payment
+                  </span>
+                </div>
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    Remaining amount charged later
+                  </span>
+                </div>
+                <div className="flex items-start">
+                  <FaCheck className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                  <span className="text-gray-700">
+                    Same cancellation policy applies
+                  </span>
+                </div>
+              </div>
+
+              {/* Payment Schedule */}
+              <div className="mb-6">
+                <div className="flex items-center mb-3">
+                  <FaRegCreditCard className="text-blue-600 mr-2" />
+                  <h3 className="font-semibold text-gray-900">
+                    Payment Schedule
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center bg-blue-50 p-3 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">Today</p>
+                      <p className="text-sm text-gray-600">Initial deposit</p>
+                    </div>
+                    <p className="font-bold text-lg text-blue-700">
+                      ${depositAmount}
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center p-3">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Before Arrival
+                      </p>
+                      <p className="text-sm text-gray-600">Remaining balance</p>
+                    </div>
+                    <p className="font-bold text-lg text-gray-900">
+                      ${(basePrice - depositAmount).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <button
+                onClick={() => handlePaymentClick('deposit')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-4 px-6 rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl font-semibold text-lg"
+              >
+                Pay ${depositAmount} Deposit
+              </button>
+
+              <div className="text-center text-gray-500 text-sm mt-4">
+                <p className="flex items-center justify-center">
+                  <RiSecurePaymentLine className="inline mr-1 text-emerald-500" />
+                  Balance due 7 days before arrival
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Info */}
+        <div className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-3">
+                <RiSecurePaymentLine className="text-xl" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-1">
+                Secure Payment
+              </h3>
+              <p className="text-sm text-gray-600">256-bit SSL encryption</p>
+            </div>
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 text-green-600 rounded-full mb-3">
+                <FaCheck className="text-xl" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-1">
+                No Hidden Fees
+              </h3>
+              <p className="text-sm text-gray-600">All taxes included</p>
+            </div>
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-100 text-amber-600 rounded-full mb-3">
+                <FaRegCreditCard className="text-xl" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-1">
+                Flexible Options
+              </h3>
+              <p className="text-sm text-gray-600">Multiple payment methods</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Help Section */}
+        <div className="mt-8 text-center">
+          <p className="text-gray-600">
+            Need help?{' '}
+            <button className="text-blue-600 hover:text-blue-800 font-medium underline">
+              Contact our support team
+            </button>
+          </p>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import logo from '../../assets/images/Travel+Leisure-logo.png';
 
 const Footer = () => {
   return (
@@ -10,9 +11,11 @@ const Footer = () => {
           {/* Logo Section */}
           <div className="mb-10 lg:mb-12">
             <div className="flex items-center justify-center lg:justify-start mb-4">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-bold text-xl tracking-wide shadow-md">
-                Travel + Leisure
-              </div>
+              <img
+                src={logo}
+                alt="Expedia Logo"
+                className="h-8 w-auto"
+              />
             </div>
             <p className="text-slate-600 text-sm max-w-md text-center lg:text-left mx-auto lg:mx-0">
               Your trusted partner for unforgettable travel experiences around
