@@ -31,11 +31,27 @@ const AdminPanel = () => {
         <ul className="menu p-4 text-gray-700 font-bold text-lg">
           <li>
             <Link to="/admin-panel/admin-overview">
-              <HiOutlineHomeModern /> Overview
+              <HiOutlineHomeModern />
+              Admin Overview
+            </Link>
+            <Link to="/admin-panel/users-bookings">
+              <MdLibraryBooks /> User Bookings
+            </Link>
+            <Link to="/admin-panel/user-control">
+              <AiOutlineUsergroupAdd /> User Control
+            </Link>
+            <Link to="/admin-panel/admin-control">
+              <RiAdminLine /> Admin Control
             </Link>
           </li>
           <li>
             <Link to="resort-input-form">Resort Input Form</Link>
+          </li>
+          <div className="divider"></div>
+          <li>
+            <button onClick={() => handleMenuItemClick('/')}>
+              <FaHome /> Home
+            </button>
           </li>
         </ul>
       </div>
