@@ -30,7 +30,7 @@ const AdminPanel = () => {
       <div className="hidden lg:block lg:w-64 lg:flex-shrink-0 bg-slate-200 h-screen">
         <ul className="menu p-4 text-gray-700 font-bold text-lg">
           <li>
-            <Link to="admin-panel/admin-overview">
+            <Link to="/admin-panel/admin-overview">
               <HiOutlineHomeModern /> Overview
             </Link>
           </li>
@@ -65,57 +65,71 @@ const AdminPanel = () => {
           <div className="bg-gray-200 p-4 absolute top-0 left-0 right-0 mt-12 z-50">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold"></h2>
-              <button onClick={toggleMobileMenu} className="text-2xl text-gray-700">
+              <button
+                onClick={toggleMobileMenu}
+                className="text-2xl text-gray-700"
+              >
                 <IoMdClose />
               </button>
             </div>
             <ul className="menu text-gray-700 font-bold text-xl">
-              
-
               <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/admin-overview")}>
-                <MdViewQuilt /> Admin Overview
-                </button>
-              </li>
-
-
-              <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/users-bookings")}>
-                <MdLibraryBooks /> Users Bookings
-                </button>
-              </li>
-
-
-
-              <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/user-control")}>
-                <AiOutlineUsergroupAdd /> User Control
+                <button
+                  onClick={() =>
+                    handleMenuItemClick('/admin-panel/admin-overview')
+                  }
+                >
+                  <MdViewQuilt /> Admin Overview
                 </button>
               </li>
 
               <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/admin-control")}>
-                <RiAdminLine /> Admin Control
+                <button
+                  onClick={() =>
+                    handleMenuItemClick('/admin-panel/users-bookings')
+                  }
+                >
+                  <MdLibraryBooks /> Users Bookings
                 </button>
               </li>
 
+              <li>
+                <button
+                  onClick={() =>
+                    handleMenuItemClick('/admin-panel/user-control')
+                  }
+                >
+                  <AiOutlineUsergroupAdd /> User Control
+                </button>
+              </li>
 
+              <li>
+                <button
+                  onClick={() =>
+                    handleMenuItemClick('/admin-panel/admin-control')
+                  }
+                >
+                  <RiAdminLine /> Admin Control
+                </button>
+              </li>
 
               <div className="divider"></div>
 
               <li>
-                <button onClick={() => handleMenuItemClick("/")}>
+                <button onClick={() => handleMenuItemClick('/')}>
                   <FaHome /> Home
                 </button>
               </li>
 
-
               <li>
-                <button onClick={() => handleMenuItemClick("/admin-panel/resort-input-form")}>
+                <button
+                  onClick={() =>
+                    handleMenuItemClick('/admin-panel/resort-input-form')
+                  }
+                >
                   <FaWpforms /> Resort Input Form
                 </button>
               </li>
-
             </ul>
           </div>
         </Transition>
