@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Stays from '../../components/SearchFilter/Stays';
 import Flights from '../../components/SearchFilter/Flights/Flights';
 import Cars from '../../components/SearchFilter/Cars/Cars';
@@ -25,9 +25,11 @@ import {
   FaGift,
   FaPercent,
 } from 'react-icons/fa';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 const Home = () => {
   const [activeFilter, setActiveFilter] = useState('Stays');
+  const { resortData } = useContext(AuthContext);
 
   const filters = [
     { name: 'Stays', icon: FaBed },
@@ -268,9 +270,11 @@ const Home = () => {
             <CarouselCard />
           </section>
 
-          {/* Annual Vacation Resort Showcase */}
+          {/* Annual Vacation resortData Showcase */}
           <section className="mb-10 lg:mb-16">
-            <AnnualVacation />
+            <AnnualVacation
+              resortData={resortData}
+            />
           </section>
 
           {/* Recommended Stays */}

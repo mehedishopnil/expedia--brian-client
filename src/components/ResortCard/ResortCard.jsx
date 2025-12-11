@@ -46,7 +46,7 @@ const ResortCard = ({ resort }) => {
 
   return (
     <Link
-      to={`/resort/${_id}`}
+      to={`/singleResortPage/${_id}`}
       className="group relative block bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
     >
       {/* Image Container */}

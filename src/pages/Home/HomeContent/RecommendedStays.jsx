@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { AuthContext } from '../../../providers/AuthProvider/AuthProvider';
 import ResortCard from '../../../components/ResortCard/ResortCard';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const RecommendedStays = () => {
   const { allResortData } = useContext(AuthContext);
@@ -208,7 +209,7 @@ const RecommendedStays = () => {
           href="#"
           className="inline-flex items-center gap-2 px-6 py-3 text-blue-600 font-semibold text-base hover:text-blue-700 transition-colors duration-200 group"
         >
-          <span>View all properties</span>
+          <Link to="/hotels">ViewLink properties</Link>
           <FaChevronRight className="text-xs group-hover:translate-x-1 transition-transform duration-200" />
         </a>
       </div>

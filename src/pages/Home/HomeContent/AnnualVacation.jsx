@@ -2,10 +2,15 @@ import React, { useContext, useState, useMemo } from 'react';
 import { AuthContext } from '../../../providers/AuthProvider/AuthProvider';
 import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa';
 import bgPhoto from '../../../assets/images/BEX-USCAINKSAUAE.webp';
+import { Link } from 'react-router-dom';
 
-const AnnualVacation = () => {
+const AnnualVacation = ({ resortData }) => {
+  const { _id } = resortData || {};
+
   const { allResortData } = useContext(AuthContext);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+
 
   // Memoize random data to prevent re-generation on every render
   const resortDetails = useMemo(() => {
@@ -219,7 +224,7 @@ const AnnualVacation = () => {
                     href="#"
                     className="flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm group"
                   >
-                    <span>See more deals</span>
+                    <Link to={`/singleResortPage/${_id}`}>See more deals</Link>
                     <FaChevronRight className="text-xs group-hover:translate-x-1 transition-transform duration-200" />
                   </a>
                 </div>
