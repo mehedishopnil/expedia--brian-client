@@ -70,19 +70,18 @@ const ToggleMenu = ({ closeMenu }) => {
         {user && (
           <>
             <MenuLink
-              to="/account"
+              to="/profile"
               icon={<MdAccountCircle />}
-              text="Account"
+              text="Profile"
               onClick={handleMenuItemClick}
             />
-            {role === 'admin' ? (
-              <MenuLink
-                to="/admin-panel/admin-overview"
-                icon={<MdOutlineTravelExplore />}
-                text="Admin Panel"
-                onClick={handleMenuItemClick}
-              />
-            ) : (
+            <MenuLink
+              to="/admin-panel/admin-overview"
+              icon={<MdOutlineTravelExplore />}
+              text="Admin Panel"
+              onClick={handleMenuItemClick}
+            />
+            {role === 'user' && (
               <MenuLink
                 to="/user-dashboard/user-overview"
                 icon={<MdOutlineTravelExplore />}
